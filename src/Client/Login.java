@@ -4,25 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.Socket;
+import java.io.IOException;
 
 public class Login extends JFrame {
 
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 500;
-    private static final int BROADCAST_PORT = 3000;
+    private JButton login, criarConta;
+    private JTextField inputUtilizador, inputSenha;
 
-    private Socket socket;
-    private PrintWriter out;
-    private BufferedReader in;
-
-    private JButton btnRegist, btnLogin;
-    private JLabel lblTitulo, lblUsername, lblPassword;
-    private JTextField username;
-    private JPasswordField password;
+    private static final int LARGURA_JANELA = 400;
+    private static final int ALTURA_JANELA = 250;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -35,69 +25,64 @@ public class Login extends JFrame {
     }
 
     public Login() {
-        initializeComponents();
-        setListeners();
-        setLayout();
-        initializeNetworking();
+        inicializarComponentes();
+        definirOuvintes();
+        definirLayout();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(WIDTH, HEIGHT);
-        setTitle("Tactical Comms Hub!");
+        setSize(LARGURA_JANELA, ALTURA_JANELA);
+        setTitle("Login");
         setLocationRelativeTo(null);
     }
 
-    private void initializeComponents() {
-        btnLogin = new JButton("Login");
-        btnRegist = new JButton("Criar Conta");
-        lblTitulo = new JLabel("Tactical Comms Hub!");
-        lblUsername = new JLabel("UserName: ");
-        lblPassword = new JLabel("Password: ");
-        username = new JTextField();
-        password = new JPasswordField();
+    private void inicializarComponentes() {
+        this.login = new JButton("Login");
+        this.criarConta = new JButton("Criar Conta");
+        this.inputUtilizador = new JTextField();
+        this.inputSenha = new JTextField();
     }
 
-    private void setListeners() {
-        btnLogin.addActionListener(new ActionListener() {
+    private void definirOuvintes() {
+        criarConta.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Adicione a lógica de login aqui
+                abrirPaginaRegistro();
             }
         });
 
-        btnRegist.addActionListener(new ActionListener() {
+        login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Adicione a lógica de registro aqui
+                // Adicionar lógica de login conforme necessário
+              
+                JOptionPane.showMessageDialog(Login.this, "Login realizado com sucesso!");
             }
         });
     }
 
-    private void setLayout() {
-        setLayout(new BorderLayout());
+    private void definirLayout() {
+        JPanel painelLogin = new JPanel();
+        painelLogin.setLayout(new GridLayout(5, 2));
+        painelLogin.add(new JLabel("Faça o seu login"));
+        painelLogin.add(new JLabel());
+        painelLogin.add(new JLabel("Utilizador"));
+        painelLogin.add(inputUtilizador);
+        painelLogin.add(new JLabel("Senha"));
+        painelLogin.add(inputSenha);
+        painelLogin.add(login);
+        painelLogin.add(new JLabel());
+        painelLogin.add(new JLabel("Ainda não tem conta?"));
+        painelLogin.add(criarConta);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 2));
-        panel.add(lblTitulo);
-        panel.add(new JLabel()); // Espaço em branco
-        panel.add(lblUsername);
-        panel.add(username);
-        panel.add(lblPassword);
-        panel.add(password);
-        panel.add(btnLogin);
-        panel.add(btnRegist);
-
-        add(panel, BorderLayout.CENTER);
+        add(painelLogin);
     }
 
-    private void initializeNetworking() {
-        try {
-            this.socket = new Socket("localhost", 2048);
-            this.out = new PrintWriter(socket.getOutputStream(), true);
-            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void abrirPaginaRegistro() {
+    try {
+        Register paginaRegistro = new Register();
+        paginaRegistro.setVisible(true);
+        dispose(); // Fecha a janela de login
+    } catch (IOException e) {
+        e.printStackTrace();
     }
-
-    public void start(Register register) {
-    }
+}
 }
