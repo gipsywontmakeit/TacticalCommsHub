@@ -10,6 +10,8 @@ import java.io.*;
 
 public class Register extends JFrame {
 
+    private boolean isWindowClosedByUser = false;
+
     private JButton registar, entrar;
     private JTextField inputNome, inputPass, inputUtilizador;
     private JComboBox<String> comboBoxOpcoes;
@@ -21,7 +23,8 @@ public class Register extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                new Register().setVisible(true);
+                Register registerFrame = new Register();
+                registerFrame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,10 +44,17 @@ public class Register extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                guardarDadosUtilizadorEmFicheiro();
-                System.exit(0);
+                isWindowClosedByUser = true;
+                   fecharJanela();
             }
         });
+    }
+
+    private void fecharJanela() {
+        if (isWindowClosedByUser) {
+            guardarDadosUtilizadorEmFicheiro();
+        }
+        dispose();
     }
 
     private void inicializarComponentes() {
@@ -107,39 +117,56 @@ public class Register extends JFrame {
 
      // Guardar dados no ficheiro
      // Encriptar as senhas antes de guardar
-    private void guardarDadosUtilizadorEmFicheiro() {
-        try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
-            escritor.println("Utilizador:" + inputUtilizador.getText());
-            escritor.println("Nome:" + inputNome.getText());
-            escritor.println("Senha:" + inputPass.getText());
-            escritor.println("Opcao:" + comboBoxOpcoes.getSelectedItem());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+     private void guardarDadosUtilizadorEmFicheiro() {
+         String utilizador = inputUtilizador.getText();
+         String nome = inputNome.getText();
+         String senha = inputPass.getText();
+
+         // Check if all fields are non-empty before saving
+         if (!utilizador.isEmpty() && !nome.isEmpty() && !senha.isEmpty()) {
+             try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
+                 escritor.println("Utilizador: " + utilizador);
+                 escritor.println("Nome: " + nome);
+                 escritor.println("Senha: " + senha);
+                 escritor.println("Opcao: " + comboBoxOpcoes.getSelectedItem());
+                 escritor.println("-----------");
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
+
 
     private void processarRegisto() {
-        if (inputUtilizador.getText().isEmpty() || inputNome.getText().isEmpty() || inputPass.getText().isEmpty()) {
+        String utilizador = inputUtilizador.getText();
+        String nome = inputNome.getText();
+        String senha = inputPass.getText();
+
+        if (utilizador.isEmpty() || nome.isEmpty() || senha.isEmpty()) {
             mostrarMensagem(1);
         } else {
-            if (verificarUtilizadorExistente(inputUtilizador.getText())) {
+            if (verificarUtilizadorExistente(utilizador)) {
                 mostrarMensagem(2);
             } else {
+                guardarDadosUtilizadorEmFicheiro(); // Save data during registration
                 mostrarMensagem(3);
+
                 inputPass.setText("");
                 inputNome.setText("");
                 inputUtilizador.setText("");
-                guardarDadosUtilizadorEmFicheiro();
+
+                return;
             }
         }
     }
 
-     // Adicionar lógica para verificar se o utilizador já existe no ficheiro
+
+    // Adicionar lógica para verificar se o utilizador já existe no ficheiro
      // Retorna true se existir, false se não existir
     private boolean verificarUtilizadorExistente(String utilizador) {
-        return false; 
+        return false;
     }
-    
+
 
     public void mostrarMensagem(int op) {
         JOptionPane.showMessageDialog(this, obterMensagem(op), obterTituloMensagem(op), JOptionPane.INFORMATION_MESSAGE);

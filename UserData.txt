@@ -1,0 +1,10 @@
+Utilizador: ze
+Nome: ze
+Senha: 1
+Opcao: Opção 1
+-----------
+Utilizador: vitinha
+Nome: vitinha
+Senha: 2
+Opcao: Opção 3
+-----------
