@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Register extends JFrame {
 
@@ -65,7 +68,7 @@ public class Register extends JFrame {
         this.inputUtilizador = new JTextField();
 
         // Adiciona uma caixa de seleção com três opções
-        String[] opcoes = {"Opção 1", "Opção 2", "Opção 3"};
+        String[] opcoes = {"Soldado", "Sargento", "Tenente"};
         this.comboBoxOpcoes = new JComboBox<>(opcoes);
     }
 
@@ -118,23 +121,46 @@ public class Register extends JFrame {
      // Guardar dados no ficheiro
      // Encriptar as senhas antes de guardar
      private void guardarDadosUtilizadorEmFicheiro() {
-         String utilizador = inputUtilizador.getText();
-         String nome = inputNome.getText();
-         String senha = inputPass.getText();
-
-         // Check if all fields are non-empty before saving
-         if (!utilizador.isEmpty() && !nome.isEmpty() && !senha.isEmpty()) {
-             try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
-                 escritor.println("Utilizador: " + utilizador);
-                 escritor.println("Nome: " + nome);
-                 escritor.println("Senha: " + senha);
-                 escritor.println("Opcao: " + comboBoxOpcoes.getSelectedItem());
-                 escritor.println("-----------");
-             } catch (IOException e) {
-                 e.printStackTrace();
-             }
-         }
-     }
+        String utilizador = inputUtilizador.getText();
+        String nome = inputNome.getText();
+        String senha = inputPass.getText();
+    
+        // Verifica se os ficheiros não estão vazios
+        if (!utilizador.isEmpty() && !nome.isEmpty() && !senha.isEmpty()) {
+            try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
+                String senhaCriptografada = criptografarSenha(senha);
+                
+                escritor.println("Utilizador: " + utilizador);
+                escritor.println("Nome: " + nome);
+                escritor.println("Senha: " + senhaCriptografada);
+                escritor.println("Opcao: " + comboBoxOpcoes.getSelectedItem());
+                escritor.println("-----------");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private String criptografarSenha(String senha) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(senha.getBytes(StandardCharsets.UTF_8));
+            
+            // Converte o hash para uma representação hexadecimal
+            StringBuilder hexHash = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexHash.append('0');
+                hexHash.append(hex);
+            }
+            
+            return hexHash.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            
+            return null;
+        }
+    }
 
 
     private void processarRegisto() {
