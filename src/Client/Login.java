@@ -9,7 +9,8 @@ import java.io.IOException;
 public class Login extends JFrame {
 
     private JButton login, criarConta;
-    private JTextField inputUtilizador, inputSenha;
+    private JTextField inputUtilizador;
+    private JPasswordField inputPass; 
 
     private static final int LARGURA_JANELA = 400;
     private static final int ALTURA_JANELA = 250;
@@ -38,7 +39,7 @@ public class Login extends JFrame {
         this.login = new JButton("Login");
         this.criarConta = new JButton("Criar Conta");
         this.inputUtilizador = new JTextField();
-        this.inputSenha = new JTextField();
+        this.inputPass = new JPasswordField();  // Alteração aqui
     }
 
     private void definirOuvintes() {
@@ -53,8 +54,13 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Adicionar lógica de login conforme necessário
-              
+                char[] senhaChars = inputPass.getPassword();  // Obter a senha como um array de caracteres
+                String senha = new String(senhaChars);  // Converter para uma string segura
+                // Aqui você pode usar a senha para autenticação
+
                 JOptionPane.showMessageDialog(Login.this, "Login realizado com sucesso!");
+                // Limpar a senha após o login
+                inputPass.setText("");
             }
         });
     }
@@ -67,7 +73,7 @@ public class Login extends JFrame {
         painelLogin.add(new JLabel("Utilizador"));
         painelLogin.add(inputUtilizador);
         painelLogin.add(new JLabel("Senha"));
-        painelLogin.add(inputSenha);
+        painelLogin.add(inputPass);
         painelLogin.add(login);
         painelLogin.add(new JLabel());
         painelLogin.add(new JLabel("Ainda não tem conta?"));
@@ -77,12 +83,12 @@ public class Login extends JFrame {
     }
 
     private void abrirPaginaRegistro() {
-    try {
-        Register paginaRegistro = new Register();
-        paginaRegistro.setVisible(true);
-        dispose(); // Fecha a janela de login
-    } catch (IOException e) {
-        e.printStackTrace();
+        try {
+            Register paginaRegistro = new Register();
+            paginaRegistro.setVisible(true);
+            dispose(); // Fecha a janela de login
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 }

@@ -64,7 +64,7 @@ public class Register extends JFrame {
         this.registar = new JButton("Submeter registo!");
         this.entrar = new JButton("Efetuar Login");
         this.inputNome = new JTextField();
-        this.inputPass = new JTextField();
+        this.inputPass = new JPasswordField();
         this.inputUtilizador = new JTextField();
 
         // Adiciona uma caixa de seleção com três opções
@@ -123,13 +123,16 @@ public class Register extends JFrame {
      private void guardarDadosUtilizadorEmFicheiro() {
         String utilizador = inputUtilizador.getText();
         String nome = inputNome.getText();
-        String senha = inputPass.getText();
     
-        // Verifica se os ficheiros não estão vazios
+        // Obtém a senha do campo de senha
+        char[] senhaChars = ((JPasswordField) inputPass).getPassword();
+        String senha = new String(senhaChars);
+    
+        // Check if all fields are non-empty before saving
         if (!utilizador.isEmpty() && !nome.isEmpty() && !senha.isEmpty()) {
             try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
                 String senhaCriptografada = criptografarSenha(senha);
-                
+    
                 escritor.println("Utilizador: " + utilizador);
                 escritor.println("Nome: " + nome);
                 escritor.println("Senha: " + senhaCriptografada);
@@ -140,6 +143,7 @@ public class Register extends JFrame {
             }
         }
     }
+    
     
     private String criptografarSenha(String senha) {
         try {
