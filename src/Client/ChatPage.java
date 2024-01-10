@@ -9,10 +9,10 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class ChatPage extends JFrame {
 
@@ -110,9 +110,10 @@ public class ChatPage extends JFrame {
             writer.println("-----------");
             System.out.println("Mensagem enviada e salva no arquivo.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Erro ao escrever no arquivo: " + e.getMessage());
         }
     }
+    
     
     
        
@@ -133,4 +134,6 @@ public class ChatPage extends JFrame {
         }
         return userList.toArray(new String[0]);
     }
+
 }
+
