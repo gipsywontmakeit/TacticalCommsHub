@@ -121,50 +121,51 @@ public class Register extends JFrame {
      // Guardar dados no ficheiro
      // Encriptar as senhas antes de guardar
      private void guardarDadosUtilizadorEmFicheiro() {
-        String utilizador = inputUtilizador.getText();
-        String nome = inputNome.getText();
-    
-        // Obtém a senha do campo de senha
-        char[] senhaChars = ((JPasswordField) inputPass).getPassword();
-        String senha = new String(senhaChars);
-    
-        // Check if all fields are non-empty before saving
-        if (!utilizador.isEmpty() && !nome.isEmpty() && !senha.isEmpty()) {
-            try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
-                String senhaCriptografada = criptografarSenha(senha);
-    
-                escritor.println("Utilizador: " + utilizador);
-                escritor.println("Nome: " + nome);
-                escritor.println("Senha: " + senhaCriptografada);
-                escritor.println("Opcao: " + comboBoxOpcoes.getSelectedItem());
-                escritor.println("-----------");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    
-    private String criptografarSenha(String senha) {
+         // Get user input
+         String utilizador = inputUtilizador.getText();
+         String nome = inputNome.getText();
+         char[] senhaChars = inputPass.getText().toCharArray();
+         String senha = new String(senhaChars);
+
+         // Check if all fields are non-empty before saving
+         if (!utilizador.isEmpty() && !nome.isEmpty() && senhaChars.length > 0) {
+             // Hash the password before storing it
+             String senhaCriptografada = criptografarSenha(senha);
+
+             // Write user data to the file
+             try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
+                 escritor.println("Utilizador: " + utilizador);
+                 escritor.println("Nome: " + nome);
+                 escritor.println("Senha: " + senhaCriptografada);
+                 escritor.println("Opção: " + comboBoxOpcoes.getSelectedItem());
+                    escritor.println("--------------------");
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
+
+
+    public String criptografarSenha(String senha) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(senha.getBytes(StandardCharsets.UTF_8));
-            
-            // Converte o hash para uma representação hexadecimal
+
+            // Convert the hash to a hexadecimal representation
             StringBuilder hexHash = new StringBuilder();
             for (byte b : hash) {
                 String hex = Integer.toHexString(0xff & b);
                 if (hex.length() == 1) hexHash.append('0');
                 hexHash.append(hex);
             }
-            
+
             return hexHash.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            
             return null;
         }
     }
+
 
 
     private void processarRegisto() {
@@ -184,6 +185,7 @@ public class Register extends JFrame {
                 inputPass.setText("");
                 inputNome.setText("");
                 inputUtilizador.setText("");
+
 
                 return;
             }

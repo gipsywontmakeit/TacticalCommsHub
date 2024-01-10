@@ -1,15 +1,10 @@
-Utilizador: ze
-Nome: ze
-Senha: 1
-Opcao: Opção 1
------------
-Utilizador: vitinha
-Nome: vitinha
-Senha: 2
-Opcao: Opção 3
------------
 Utilizador: a
 Nome: a
 Senha: ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb
-Opcao: Tenente
------------
+Opção: Soldado
+--------------------
+Utilizador: b
+Nome: b
+Senha: 3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d
+Opção: Tenente
+--------------------
