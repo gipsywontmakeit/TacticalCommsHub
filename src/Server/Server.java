@@ -1,7 +1,5 @@
 package Server;
 
-import Model.NotificationManager;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,7 +22,7 @@ public class Server {
                 worker.start();
 
                 // Enviar uma notificação para todos os clientes quando um novo cliente se conecta
-                notificationManager.sendBroadcastNotification("Novo cliente conectado", );
+                //notificationManager.sendBroadcastNotification("Novo cliente conectado", );
             }
         } catch (IOException e) {
             System.out.println("Could not listen on port " + PORT);

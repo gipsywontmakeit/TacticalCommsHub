@@ -1,7 +1,6 @@
 package Client;
 
 import Model.Message;
-import Model.MessageHistory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +26,6 @@ public class ChatPage extends JFrame {
     private static final int ALTURA_JANELA = 400;
     private static final String MESSAGES_FILE = "Messages.txt"; // Arquivo para armazenar mensagens
 
-    private MessageHistory messageHistory;
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
@@ -41,7 +38,6 @@ public class ChatPage extends JFrame {
 
     public ChatPage(String currentUser) throws IOException {
         this.currentUser = currentUser;
-        this.messageHistory = new MessageHistory();
         inicializarComponentes();
         definirOuvintes();
         definirLayout();
@@ -95,22 +91,22 @@ public class ChatPage extends JFrame {
 
         if (!receiver.isEmpty() && !messageText.isEmpty()) {
             // Criar a mensagem
-            Message message = new Message(messageHistory.size() + 1, currentUser, messageText, false);
+            //Message message = new Message(messageHistory.size() + 1, currentUser, messageText, false);
 
             // Adicionar mensagem ao histórico e exibir na área de mensagens
-            messageHistory.getHistory().add(message);
-            exibirMensagem(message);
+            //messageHistory.getHistory().add(message);
+            //exibirMensagem(message);
 
             // Limpar o campo de entrada de mensagem
             inputMessage.setText("");
 
             // Salvar a mensagem no arquivo
-            salvarMensagemNoArquivo(message);
+            //salvarMensagemNoArquivo(message);
         }
     }
 
     private void exibirMensagem(Message message) {
-        messageArea.append(message.getUsername() + ": " + message.getMessage() + "\n");
+       // messageArea.append(message.getUsername() + ": " + message.getMessage() + "\n");
     }
 
     private void carregarHistoricoMensagens() {
@@ -123,9 +119,9 @@ public class ChatPage extends JFrame {
                     String messageText = parts[2].trim();
                     boolean isNotified = Boolean.parseBoolean(parts[3].trim());
 
-                    Message message = new Message(messageHistory.size() + 1, username, messageText, isNotified);
-                    messageHistory.getHistory().add(message);
-                    exibirMensagem(message);
+                    //Message message = new Message(messageHistory.size() + 1, username, messageText, isNotified);
+                    //messageHistory.getHistory().add(message);
+                    //exibirMensagem(message);
                 }
             }
         } catch (IOException ex) {
@@ -133,17 +129,17 @@ public class ChatPage extends JFrame {
         }
     }
 
-    private void salvarMensagemNoArquivo(Message message) {
-        try (PrintWriter writer = new PrintWriter(MESSAGES_FILE)) {
-            for (Message msg : messageHistory.getHistory()) {
-                writer.println("ID: " + msg.getId());
-                writer.println("Username: " + msg.getUsername());
-                writer.println("Message: " + msg.getMessage());
-                writer.println("IsNotified: " + msg.getIsNotified());
-                writer.println("-----------");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void salvarMensagemNoArquivo(Message message) {
+//        try (PrintWriter writer = new PrintWriter(MESSAGES_FILE)) {
+//            //for (Message msg : messageHistory.getHistory()) {
+//               // writer.println("ID: " + msg.getId());
+//                //writer.println("Username: " + msg.getUsername());
+//                //writer.println("Message: " + msg.getMessage());
+//                writer.println("IsNotified: " + msg.getIsNotified());
+//                writer.println("-----------");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
