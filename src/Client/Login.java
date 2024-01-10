@@ -5,6 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Login extends JFrame {
 
@@ -49,21 +54,75 @@ public class Login extends JFrame {
                 abrirPaginaRegistro();
             }
         });
-
+    
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Adicionar lógica de login conforme necessário
-                char[] senhaChars = inputPass.getPassword();  // Obter a senha como um array de caracteres
-                String senha = new String(senhaChars);  // Converter para uma string segura
-                // Aqui você pode usar a senha para autenticação
-
-                JOptionPane.showMessageDialog(Login.this, "Login realizado com sucesso!");
-                // Limpar a senha após o login
-                inputPass.setText("");
+                String utilizadorDigitado = inputUtilizador.getText();
+                char[] senhaChars = inputPass.getPassword();
+                String senhaDigitada = new String(senhaChars);
+    
+                // Verificar se os campos estão preenchidos
+                if (!utilizadorDigitado.isEmpty() && senhaChars.length > 0) {
+                    // Verificar se os dados correspondem ao arquivo de usuários
+                    if (verificarCredenciais(utilizadorDigitado, senhaDigitada)) {
+                        JOptionPane.showMessageDialog(Login.this, "Login realizado com sucesso!");
+                        // Limpar a senha após o login
+                        inputPass.setText("");
+                    } else {
+                        JOptionPane.showMessageDialog(Login.this, "Credenciais inválidas. Tente novamente.");
+                        // Limpar a senha em caso de credenciais inválidas
+                        inputPass.setText("");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(Login.this, "Preencha todos os campos.");
+                }
             }
         });
     }
+    
+    private boolean verificarCredenciais(String utilizador, String senha) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":");
+                if (parts.length == 4) {
+                    String utilizadorSalvo = parts[1].trim();
+                    String senhaSalva = parts[2].trim();
+    
+                    // Encriptar a senha digitada usando o mesmo algoritmo que a senha salva
+                    String senhaDigitadaEncriptada = getSHA256(senha);
+    
+                    // Comparar usuário e senha encriptadas com os dados salvos
+                    if (utilizador.equalsIgnoreCase(utilizadorSalvo) && senhaDigitadaEncriptada.equals(senhaSalva)) {
+                        return true; // Correspondência encontrada
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return false; // Não encontrou correspondência
+    }
+    
+    private static String getSHA256(String senha) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(senha.getBytes(StandardCharsets.UTF_8));
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(0xff & hash[i]);
+                if(hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    
 
     private void definirLayout() {
         JPanel painelLogin = new JPanel();
