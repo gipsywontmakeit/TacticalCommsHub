@@ -64,4 +64,10 @@ public class Entity {
     public void beNotified(String message) {
 
     }
+
+    public String toString() {
+        return "ID: " + id +
+                ", Username: " + username;
+           }
+     
 }

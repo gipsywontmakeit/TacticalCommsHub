@@ -1,33 +1,33 @@
 package Client;
 
 import Model.Message;
-import Model.MessageHistory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.io.FileWriter;
 
 public class ChatPage extends JFrame {
 
-    private JTextField inputReceiver;
+    private JComboBox<String> userComboBox;
     private JTextArea messageArea;
     private JTextField inputMessage;
     private JButton sendButton;
 
     private String currentUser;
-    private String receiver;
+    private String selectedUser;
 
     private static final int LARGURA_JANELA = 400;
     private static final int ALTURA_JANELA = 400;
+    private static final String USERS_FILE = "UserData.txt"; // Arquivo para armazenar usuários
     private static final String MESSAGES_FILE = "Messages.txt"; // Arquivo para armazenar mensagens
-
-    private MessageHistory messageHistory;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -41,7 +41,6 @@ public class ChatPage extends JFrame {
 
     public ChatPage(String currentUser) throws IOException {
         this.currentUser = currentUser;
-        this.messageHistory = new MessageHistory();
         inicializarComponentes();
         definirOuvintes();
         definirLayout();
@@ -52,7 +51,7 @@ public class ChatPage extends JFrame {
     }
 
     private void inicializarComponentes() {
-        this.inputReceiver = new JTextField();
+        this.userComboBox = new JComboBox<>(carregarUsuarios());
         this.messageArea = new JTextArea();
         this.inputMessage = new JTextField();
         this.sendButton = new JButton("Enviar");
@@ -73,7 +72,7 @@ public class ChatPage extends JFrame {
 
         JPanel topPanel = new JPanel(new GridLayout(1, 3));
         topPanel.add(new JLabel("Para:"));
-        topPanel.add(inputReceiver);
+        topPanel.add(userComboBox);
         topPanel.add(sendButton);
 
         JScrollPane scrollPane = new JScrollPane(messageArea);
@@ -84,66 +83,54 @@ public class ChatPage extends JFrame {
         painelChat.add(inputMessage, BorderLayout.SOUTH);
 
         add(painelChat);
-
-        // Carregar histórico de mensagens ao iniciar
-        carregarHistoricoMensagens();
     }
 
     private void enviarMensagem() {
-        String receiver = inputReceiver.getText();
+        selectedUser = (String) userComboBox.getSelectedItem();
         String messageText = inputMessage.getText();
-
-        if (!receiver.isEmpty() && !messageText.isEmpty()) {
-            // Criar a mensagem
-            Message message = new Message(messageHistory.size() + 1, currentUser, messageText, false);
-
-            // Adicionar mensagem ao histórico e exibir na área de mensagens
-            messageHistory.getHistory().add(message);
-            exibirMensagem(message);
-
+    
+        if (!selectedUser.isEmpty() && !messageText.isEmpty()) {
+            // Exibir a mensagem na área de mensagens
+            exibirMensagem(currentUser + ": " + messageText + "\n");
+    
             // Limpar o campo de entrada de mensagem
             inputMessage.setText("");
-
+    
             // Salvar a mensagem no arquivo
-            salvarMensagemNoArquivo(message);
+            salvarMensagemNoArquivo(currentUser, selectedUser, messageText);
+            System.out.println("Mensagem enviada e salva no arquivo.");
         }
     }
 
-    private void exibirMensagem(Message message) {
-        messageArea.append(message.getUsername() + ": " + message.getMessage() + "\n");
+    private void salvarMensagemNoArquivo(String sender, String receiver, String messageText) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(MESSAGES_FILE, true))) {
+            writer.println("Sender: " + sender);
+            writer.println("Receiver: " + receiver);
+            writer.println("Message: " + messageText);
+            writer.println("-----------");
+            System.out.println("Mensagem enviada e salva no arquivo.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+       
+
+    private void exibirMensagem(String message) {
+        messageArea.append(message);
     }
 
-    private void carregarHistoricoMensagens() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(MESSAGES_FILE))) {
+    private String[] carregarUsuarios() {
+        ArrayList<String> userList = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                if (parts.length == 4) {
-                    String username = parts[1].trim();
-                    String messageText = parts[2].trim();
-                    boolean isNotified = Boolean.parseBoolean(parts[3].trim());
-
-                    Message message = new Message(messageHistory.size() + 1, username, messageText, isNotified);
-                    messageHistory.getHistory().add(message);
-                    exibirMensagem(message);
-                }
+                userList.add(line.trim());
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    private void salvarMensagemNoArquivo(Message message) {
-        try (PrintWriter writer = new PrintWriter(MESSAGES_FILE)) {
-            for (Message msg : messageHistory.getHistory()) {
-                writer.println("ID: " + msg.getId());
-                writer.println("Username: " + msg.getUsername());
-                writer.println("Message: " + msg.getMessage());
-                writer.println("IsNotified: " + msg.getIsNotified());
-                writer.println("-----------");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return userList.toArray(new String[0]);
     }
 }
