@@ -116,6 +116,11 @@ public class ChatPage extends JFrame {
     private void backToTacticalCommsHub() {
         // Implemente a lógica para voltar para TacticalCommsHub
         dispose(); // Fecha a janela atual
+        try {
+            new TacticalCommsHub().setVisible(true); // Abre a TacticalCommsHub
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private String[] loadUsers() {

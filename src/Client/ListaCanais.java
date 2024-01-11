@@ -13,6 +13,7 @@ public class ListaCanais extends JFrame {
 
     private JComboBox<String> canaisComboBox;
     private JButton entrarButton;
+    private JButton criarCanalButton;
     private JButton voltarButton;
 
     private static final String CANAIS_FILE = "CanaisComunicacao.txt";
@@ -43,6 +44,7 @@ public class ListaCanais extends JFrame {
     private void inicializarComponentes() {
         this.canaisComboBox = new JComboBox<>();
         this.entrarButton = new JButton("Entrar");
+        this.criarCanalButton = new JButton("Criar Canal");
         this.voltarButton = new JButton("Voltar");
     }
 
@@ -51,6 +53,13 @@ public class ListaCanais extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 entrarNoCanal();
+            }
+        });
+
+        criarCanalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                criarCanal();
             }
         });
 
@@ -66,9 +75,10 @@ public class ListaCanais extends JFrame {
         JPanel painelListaCanais = new JPanel();
         painelListaCanais.setLayout(new BorderLayout());
 
-        JPanel topPanel = new JPanel(new GridLayout(1, 2));
+        JPanel topPanel = new JPanel(new GridLayout(1, 3));
         topPanel.add(canaisComboBox);
         topPanel.add(entrarButton);
+        topPanel.add(criarCanalButton);
 
         painelListaCanais.add(topPanel, BorderLayout.NORTH);
         painelListaCanais.add(voltarButton, BorderLayout.SOUTH);
@@ -96,8 +106,23 @@ public class ListaCanais extends JFrame {
         }
     }
 
+    private void criarCanal() {
+        // Lógica para redirecionar para a interface CriarCanal
+        dispose(); // Fecha a janela atual
+
+        new CriarCanal().setVisible(true);
+
+    }
+
     private void voltar() {
         // Lógica para voltar (fechar a janela atual, por exemplo)
         dispose();
+    
+        try {
+            new TacticalCommsHub().setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
+    
 }

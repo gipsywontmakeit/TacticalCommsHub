@@ -55,6 +55,25 @@ public class TacticalCommsHub extends JFrame {
     }
 
     private void definirOuvintes() {
+
+        JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(2); // Índice do botão "Pedir Autorização"
+
+pedirAutorizacaoButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        abrirAutorizacao();
+    }
+});
+
+        JButton definirCanalButton = (JButton) getContentPane().getComponent(1); // Índice do botão "Definir Canal"
+
+        definirCanalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirListaCanais();
+            }
+        });
+
         JButton enviarMensagemButton = (JButton) getContentPane().getComponent(0); // Índice do botão "Enviar Mensagem"
 
         enviarMensagemButton.addActionListener(new ActionListener() {
@@ -83,6 +102,17 @@ public class TacticalCommsHub extends JFrame {
         });
     }
 
+    private void abrirAutorizacao() {
+        // Lógica para abrir a página "Autorizacao" ou realizar outras ações necessárias
+        dispose(); // Fecha a janela atual
+        try {
+            new Autorizacao().setVisible(true);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+                }
+
+
     private void abrirChatPage() {
         // Lógica para abrir a página "ChatPage" ou realizar outras ações necessárias
         dispose(); // Fecha a janela atual
@@ -94,6 +124,19 @@ public class TacticalCommsHub extends JFrame {
             ex.printStackTrace();
         }
     }
+
+    private void abrirListaCanais() {
+        // Lógica para abrir a página "ListaCanais" ou realizar outras ações necessárias
+        dispose(); // Fecha a janela atual
+    
+        // Aqui, você pode abrir a página "ListaCanais" ou realizar outras ações necessárias
+        try {
+            new ListaCanais().setVisible(true);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+                }
+
 
     private void verificarEAbrirRelatorios() {
         if (verificarPermissaoTenente()) {
