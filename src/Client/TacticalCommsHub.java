@@ -3,6 +3,9 @@ package Client;
 import Model.Entity;
 
 import javax.swing.*;
+
+import Model.Entity;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +36,11 @@ public class TacticalCommsHub extends JFrame {
 
     public TacticalCommsHub(Entity actualUser) {
         this.actualUser = actualUser;
+    }
+
+    private JLabel activeUsersReportLabel;
+
+    public TacticalCommsHub() {
         inicializarComponentes();
         definirLayout();
         definirOuvintes();
@@ -64,7 +72,7 @@ public class TacticalCommsHub extends JFrame {
         add(relatoriosButton);
         add(logoutButton);
     }
-
+        
     private void definirLayout() {
         setLayout(new GridLayout(4, 2));
     }
@@ -72,6 +80,23 @@ public class TacticalCommsHub extends JFrame {
     private void definirOuvintes() {
 
         JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(3); // Índice do botão "Pedir Autorização"
+
+        JButton notificacoesButton = (JButton) getContentPane().getComponent(4); // Índice do botão "Notificações"
+
+        notificacoesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirNotificacoes();
+            }
+        });
+
+        JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(5); // Índice do botão "Emitir Notificações"
+        emitirNotificacaoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirEmitirNotificacao();
+            }
+        });
 
         pedirAutorizacaoButton.addActionListener(new ActionListener() {
     @Override
@@ -115,6 +140,27 @@ public class TacticalCommsHub extends JFrame {
                 realizarLogout();
             }
         });
+    }
+
+    private void abrirNotificacoes() {
+        // Lógica para abrir a interface "Notificacoes" ou realizar outras ações necessárias
+        dispose(); // Fecha a janela atual (TacticalCommsHub)
+        try {
+            Notificacoes notificacoes = new Notificacoes();
+            notificacoes.setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void abrirEmitirNotificacao() {
+        // Lógica para abrir a interface "Emitir Notificacao" ou realizar outras ações necessárias
+        dispose(); // Fecha a janela atual (TacticalCommsHub)
+        try {
+            new EmitirNotificacao().setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void abrirAutorizacao() {
