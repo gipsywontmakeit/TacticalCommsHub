@@ -62,7 +62,7 @@ public class Login extends JFrame {
                 String utilizadorDigitado = inputUtilizador.getText();
                 char[] senhaChars = inputPass.getPassword();
                 String senhaDigitada = new String(senhaChars);
-    
+        
                 // Verificar se os campos estão preenchidos
                 if (!utilizadorDigitado.isEmpty() && senhaChars.length > 0) {
                     // Verificar se os dados correspondem ao arquivo de usuários
@@ -70,6 +70,9 @@ public class Login extends JFrame {
                         JOptionPane.showMessageDialog(Login.this, "Login realizado com sucesso!");
                         // Limpar a senha após o login
                         inputPass.setText("");
+        
+                        // Abrir a interface TacticalCommsHub após o login bem-sucedido
+                        abrirTacticalCommsHub();
                     } else {
                         JOptionPane.showMessageDialog(Login.this, "Credenciais inválidas. Tente novamente.");
                         // Limpar a senha em caso de credenciais inválidas
@@ -81,6 +84,7 @@ public class Login extends JFrame {
             }
         });
     }
+
 
     private boolean verificarCredenciais(String utilizador, String senha) {
         try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
@@ -154,6 +158,16 @@ public class Login extends JFrame {
             dispose(); // Fecha a janela de login
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void abrirTacticalCommsHub() {
+        try {
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub();
+            tacticalCommsHub.setVisible(true);
+            dispose(); // Fecha a janela de login
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

@@ -130,13 +130,11 @@ public class Entity {
         }
     }
 
-<<<<<<< HEAD
     public String toString() {
         return "ID: " + id +
                 ", Username: " + username;
            }
      
-=======
     private void handleInfoNotification(Notification notification) {
         System.out.println("Info Notification: " + notification.getMessage());
     }
@@ -165,5 +163,4 @@ public class Entity {
         }
     }
 
->>>>>>> master
 }

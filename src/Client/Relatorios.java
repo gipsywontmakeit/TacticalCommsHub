@@ -83,7 +83,14 @@ public class Relatorios extends JFrame {
     }
 
     private void voltar() {
-        // Lógica para voltar (fechar a janela atual, por exemplo)
-        dispose();
+        // Lógica para voltar (abrir a interface TacticalCommsHub)
+        try {
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub();
+            tacticalCommsHub.setVisible(true);
+            dispose(); // Fecha a janela atual (Relatorios)
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
+

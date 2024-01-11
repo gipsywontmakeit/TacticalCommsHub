@@ -1,10 +1,7 @@
 package Client;
 
-<<<<<<< HEAD
-=======
 import Model.Message;
 
->>>>>>> master
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,14 +20,11 @@ public class ChatPage extends JFrame {
 
     private String currentUser;
 
-<<<<<<< HEAD
     private static final String USERS_FILE = "UserData.txt";
     private static final String MESSAGES_FILE = "Messages.txt";
-=======
     private static final int LARGURA_JANELA = 400;
     private static final int ALTURA_JANELA = 400;
-    private static final String MESSAGES_FILE = "Messages.txt"; // Arquivo para armazenar mensagens
->>>>>>> master
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -44,15 +38,9 @@ public class ChatPage extends JFrame {
 
     public ChatPage(String currentUser) throws IOException {
         this.currentUser = currentUser;
-<<<<<<< HEAD
         initializeComponents();
         defineListeners();
         defineLayout();
-=======
-        inicializarComponentes();
-        definirOuvintes();
-        definirLayout();
->>>>>>> master
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setTitle("Chat - " + currentUser);
@@ -107,7 +95,6 @@ public class ChatPage extends JFrame {
         String selectedUser = (String) userComboBox.getSelectedItem();
         String messageText = inputMessage.getText().replaceAll("\\s+", "").trim();
 
-<<<<<<< HEAD
         if (!selectedUser.isEmpty() && !messageText.isEmpty()) {
             displayMessage(currentUser + ": " + messageText + "\n");
             inputMessage.setText("");
@@ -137,49 +124,10 @@ public class ChatPage extends JFrame {
         try {
             new TacticalCommsHub().setVisible(true); // Abre a TacticalCommsHub
         } catch (Exception ex) {
-=======
-        if (!receiver.isEmpty() && !messageText.isEmpty()) {
-            // Criar a mensagem
-            //Message message = new Message(messageHistory.size() + 1, currentUser, messageText, false);
-
-            // Adicionar mensagem ao histórico e exibir na área de mensagens
-            //messageHistory.getHistory().add(message);
-            //exibirMensagem(message);
-
-            // Limpar o campo de entrada de mensagem
-            inputMessage.setText("");
-
-            // Salvar a mensagem no arquivo
-            //salvarMensagemNoArquivo(message);
-        }
-    }
-
-    private void exibirMensagem(Message message) {
-       // messageArea.append(message.getUsername() + ": " + message.getMessage() + "\n");
-    }
-
-    private void carregarHistoricoMensagens() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(MESSAGES_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                if (parts.length == 4) {
-                    String username = parts[1].trim();
-                    String messageText = parts[2].trim();
-                    boolean isNotified = Boolean.parseBoolean(parts[3].trim());
-
-                    //Message message = new Message(messageHistory.size() + 1, username, messageText, isNotified);
-                    //messageHistory.getHistory().add(message);
-                    //exibirMensagem(message);
-                }
-            }
-        } catch (IOException ex) {
->>>>>>> master
             ex.printStackTrace();
         }
     }
 
-<<<<<<< HEAD
     private String[] loadUsers() {
         List<String> usersList = new ArrayList<>();
 
@@ -201,19 +149,4 @@ public class ChatPage extends JFrame {
         // Converte a lista para um array
         return usersList.toArray(new String[0]);
     }
-=======
-//    private void salvarMensagemNoArquivo(Message message) {
-//        try (PrintWriter writer = new PrintWriter(MESSAGES_FILE)) {
-//            //for (Message msg : messageHistory.getHistory()) {
-//               // writer.println("ID: " + msg.getId());
-//                //writer.println("Username: " + msg.getUsername());
-//                //writer.println("Message: " + msg.getMessage());
-//                writer.println("IsNotified: " + msg.getIsNotified());
-//                writer.println("-----------");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
->>>>>>> master
 }

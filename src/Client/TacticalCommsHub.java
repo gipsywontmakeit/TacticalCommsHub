@@ -137,22 +137,52 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
         }
                 }
 
-
-    private void verificarEAbrirRelatorios() {
-        if (verificarPermissaoTenente()) {
-            // Lógica para abrir a interface "Relatorios" ou realizar outras ações necessárias
-            dispose(); // Fecha a janela atual
-
-            // Aqui, você pode abrir a interface "Relatorios" ou realizar outras ações necessárias
-            try {
-                new Relatorios().setVisible(true);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Você não tem permissão para acessar Relatórios.");
-        }
-    }
+                private void verificarEAbrirRelatorios() {
+                    if (verificarPermissaoTenente()) {
+                        // Lógica para abrir a interface "Relatorios" ou realizar outras ações necessárias
+                        dispose(); // Fecha a janela atual
+                
+                        // Aqui, você pode abrir a interface "Relatorios" ou realizar outras ações necessárias
+                        try {
+                            new Relatorios().setVisible(true);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Você não tem permissão para acessar Relatórios.");
+                    }
+                }
+                
+                private boolean verificarPermissaoTenente() {
+                    try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            if (line.equals("-----------")) {
+                                // Lê as próximas três linhas após "-----------"
+                                for (int i = 0; i < 3; i++) {
+                                    reader.readLine();
+                                }
+                
+                                // Lê a linha "Opcao"
+                                String opcaoLine = reader.readLine();
+                                if (opcaoLine != null && opcaoLine.trim().startsWith("Opcao:")) {
+                                    // Extrai o valor da opção (Sargento, Tenente, Soldado, etc.)
+                                    String opcao = opcaoLine.trim().substring("Opcao:".length()).trim();
+                                    // Verifica se a opção é "Tenente"
+                                    if ("Tenente".equals(opcao)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return false;
+                }
+                
+               
+                
 
     private void realizarLogout() {
         // Lógica para logout (redirecionar para a página de login ou realizar outras ações)
@@ -166,22 +196,5 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
         }
     }
 
-    private boolean verificarPermissaoTenente() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userData = line.split(":");
-                if (userData.length == 5) {
-                    String username = userData[1].trim();
-                    String rank = userData[4].trim();
-                    if ("Tenente".equals(rank) && username.equals("Utilizador")) {
-                        return true; // O usuário é um "Tenente"
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false; // O usuário não é um "Tenente"
-    }
+   
 }
