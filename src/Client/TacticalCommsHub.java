@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class TacticalCommsHub extends JFrame {
 
@@ -51,45 +52,93 @@ public class TacticalCommsHub extends JFrame {
 
     private void definirLayout() {
         setLayout(new GridLayout(4, 2));
-    }    
-        
+    }
+
     private void definirOuvintes() {
         JButton enviarMensagemButton = (JButton) getContentPane().getComponent(0); // Índice do botão "Enviar Mensagem"
 
         enviarMensagemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica para abrir a página "ChatPage" ou realizar outras ações necessárias
-                dispose(); // Fecha a janela atual
-
-                // Aqui, você pode abrir a página "ChatPage" ou realizar outras ações necessárias
-                try {
-                    new ChatPage("Utilizador").setVisible(true);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                abrirChatPage();
             }
         });
-        
+
+        JButton relatoriosButton = (JButton) getContentPane().getComponent(6); // Índice do botão "Relatórios"
+
+        relatoriosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                verificarEAbrirRelatorios();
+            }
+        });
 
         JButton logoutButton = (JButton) getContentPane().getComponent(7); // Índice do botão "Logout"
 
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica para logout (redirecionar para a página de login ou realizar outras ações)
-                dispose(); // Fecha a janela atual
-
-                // Aqui, você pode abrir a página de login ou realizar outras ações necessárias
-                try {
-                    new Login().setVisible(true);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                realizarLogout();
             }
         });
-        
+    }
 
-}
-}
+    private void abrirChatPage() {
+        // Lógica para abrir a página "ChatPage" ou realizar outras ações necessárias
+        dispose(); // Fecha a janela atual
 
+        // Aqui, você pode abrir a página "ChatPage" ou realizar outras ações necessárias
+        try {
+            new ChatPage("Utilizador").setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void verificarEAbrirRelatorios() {
+        if (verificarPermissaoTenente()) {
+            // Lógica para abrir a interface "Relatorios" ou realizar outras ações necessárias
+            dispose(); // Fecha a janela atual
+
+            // Aqui, você pode abrir a interface "Relatorios" ou realizar outras ações necessárias
+            try {
+                new Relatorios().setVisible(true);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Você não tem permissão para acessar Relatórios.");
+        }
+    }
+
+    private void realizarLogout() {
+        // Lógica para logout (redirecionar para a página de login ou realizar outras ações)
+        dispose(); // Fecha a janela atual
+
+        // Aqui, você pode abrir a página de login ou realizar outras ações necessárias
+        try {
+            new Login().setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private boolean verificarPermissaoTenente() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] userData = line.split(":");
+                if (userData.length == 5) {
+                    String username = userData[1].trim();
+                    String rank = userData[4].trim();
+                    if ("Tenente".equals(rank) && username.equals("Utilizador")) {
+                        return true; // O usuário é um "Tenente"
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false; // O usuário não é um "Tenente"
+    }
+}

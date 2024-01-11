@@ -1,18 +1,10 @@
 package Client;
 
-import Model.Message;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class ChatPage extends JFrame {
 
@@ -20,14 +12,12 @@ public class ChatPage extends JFrame {
     private JTextArea messageArea;
     private JTextField inputMessage;
     private JButton sendButton;
+    private JButton backButton;
 
     private String currentUser;
-    private String selectedUser;
 
-    private static final int LARGURA_JANELA = 400;
-    private static final int ALTURA_JANELA = 400;
-    private static final String USERS_FILE = "UserData.txt"; // Arquivo para armazenar usuários
-    private static final String MESSAGES_FILE = "Messages.txt"; // Arquivo para armazenar mensagens
+    private static final String USERS_FILE = "UserData.txt";
+    private static final String MESSAGES_FILE = "Messages.txt";
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -41,99 +31,97 @@ public class ChatPage extends JFrame {
 
     public ChatPage(String currentUser) throws IOException {
         this.currentUser = currentUser;
-        inicializarComponentes();
-        definirOuvintes();
-        definirLayout();
+        initializeComponents();
+        defineListeners();
+        defineLayout();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(LARGURA_JANELA, ALTURA_JANELA);
+        setSize(400, 300);
         setTitle("Chat - " + currentUser);
         setLocationRelativeTo(null);
     }
 
-    private void inicializarComponentes() {
-        this.userComboBox = new JComboBox<>(carregarUsuarios());
+    private void initializeComponents() {
+        this.userComboBox = new JComboBox<>(loadUsers());
         this.messageArea = new JTextArea();
         this.inputMessage = new JTextField();
         this.sendButton = new JButton("Enviar");
+        this.backButton = new JButton("Voltar");
     }
 
-    private void definirOuvintes() {
+    private void defineListeners() {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                enviarMensagem();
+                sendMessage();
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backToTacticalCommsHub();
             }
         });
     }
 
-    private void definirLayout() {
-        JPanel painelChat = new JPanel();
-        painelChat.setLayout(new BorderLayout());
+    private void defineLayout() {
+        JPanel chatPanel = new JPanel();
+        chatPanel.setLayout(new BorderLayout());
 
-        JPanel topPanel = new JPanel(new GridLayout(1, 3));
+        JPanel topPanel = new JPanel(new GridLayout(1, 4));
         topPanel.add(new JLabel("Para:"));
         topPanel.add(userComboBox);
         topPanel.add(sendButton);
+        topPanel.add(backButton);
 
         JScrollPane scrollPane = new JScrollPane(messageArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        painelChat.add(topPanel, BorderLayout.NORTH);
-        painelChat.add(scrollPane, BorderLayout.CENTER);
-        painelChat.add(inputMessage, BorderLayout.SOUTH);
+        chatPanel.add(topPanel, BorderLayout.NORTH);
+        chatPanel.add(scrollPane, BorderLayout.CENTER);
+        chatPanel.add(inputMessage, BorderLayout.SOUTH);
 
-        add(painelChat);
+        add(chatPanel);
     }
 
-    private void enviarMensagem() {
-        selectedUser = (String) userComboBox.getSelectedItem();
-        String messageText = inputMessage.getText();
+    private void sendMessage() {
+        String selectedUser = (String) userComboBox.getSelectedItem();
+        String messageText = inputMessage.getText().replaceAll("\\s+", "").trim();
     
         if (!selectedUser.isEmpty() && !messageText.isEmpty()) {
-            // Exibir a mensagem na área de mensagens
-            exibirMensagem(currentUser + ": " + messageText + "\n");
-    
-            // Limpar o campo de entrada de mensagem
+            displayMessage(currentUser + ": " + messageText + "\n");
             inputMessage.setText("");
     
-            // Salvar a mensagem no arquivo
-            salvarMensagemNoArquivo(currentUser, selectedUser, messageText);
-            System.out.println("Mensagem enviada e salva no arquivo.");
+            saveMessageToFile(currentUser, selectedUser, messageText);
         }
     }
 
-    private void salvarMensagemNoArquivo(String sender, String receiver, String messageText) {
+    private void saveMessageToFile(String sender, String receiver, String messageText) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(MESSAGES_FILE, true))) {
             writer.println("Sender: " + sender);
             writer.println("Receiver: " + receiver);
             writer.println("Message: " + messageText);
             writer.println("-----------");
-            System.out.println("Mensagem enviada e salva no arquivo.");
         } catch (IOException e) {
-            System.err.println("Erro ao escrever no arquivo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-    
-    
-    
-       
 
-    private void exibirMensagem(String message) {
+    private void displayMessage(String message) {
         messageArea.append(message);
     }
 
-    private String[] carregarUsuarios() {
-        ArrayList<String> userList = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                userList.add(line.trim());
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return userList.toArray(new String[0]);
+    private void backToTacticalCommsHub() {
+        // Implemente a lógica para voltar para TacticalCommsHub
+        dispose(); // Fecha a janela atual
     }
 
+    private String[] loadUsers() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
+            return reader.lines().toArray(String[]::new);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new String[0];
+    }
 }
-
