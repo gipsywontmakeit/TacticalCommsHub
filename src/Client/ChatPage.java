@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatPage extends JFrame {
 
@@ -87,11 +89,11 @@ public class ChatPage extends JFrame {
     private void sendMessage() {
         String selectedUser = (String) userComboBox.getSelectedItem();
         String messageText = inputMessage.getText().replaceAll("\\s+", "").trim();
-    
+
         if (!selectedUser.isEmpty() && !messageText.isEmpty()) {
             displayMessage(currentUser + ": " + messageText + "\n");
             inputMessage.setText("");
-    
+
             saveMessageToFile(currentUser, selectedUser, messageText);
         }
     }
@@ -117,11 +119,24 @@ public class ChatPage extends JFrame {
     }
 
     private String[] loadUsers() {
+        List<String> usersList = new ArrayList<>();
+
         try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
-            return reader.lines().toArray(String[]::new);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("-----------")) {
+                    // Lê a próxima linha após "-----------" e adiciona à lista
+                    String nextLine = reader.readLine();
+                    if (nextLine != null) {
+                        usersList.add(nextLine);
+                    }
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new String[0];
+
+        // Converte a lista para um array
+        return usersList.toArray(new String[0]);
     }
 }

@@ -1,7 +1,3 @@
-Utilizador: joao
-Nome: joao
-Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
-Opcao: Tenente
 -----------
 Utilizador: luis
 Nome: luis
@@ -10,6 +6,21 @@ Opcao: Sargento
 -----------
 Utilizador: victor
 Nome: victor
+Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
+Opcao: Tenente
+-----------
+Utilizador: teste
+Nome: teste
+Senha: a69ded8278e5995d61a8fb680e6ee1df19219f0ec52f28ce7cd566a14040562f
+Opcao: Soldado
+-----------
+Utilizador: teste1
+Nome: teste1
+Senha: 15bf532d22345576b4a51b96da4754c039ef3458494066d76828e893d69ebd1e
+Opcao: Tenente
+-----------
+Utilizador: 1
+Nome: 1
 Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
 Opcao: Tenente
 -----------
