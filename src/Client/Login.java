@@ -81,48 +81,54 @@ public class Login extends JFrame {
             }
         });
     }
-    
+
     private boolean verificarCredenciais(String utilizador, String senha) {
         try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                if (parts.length == 4) {
-                    String utilizadorSalvo = parts[1].trim();
-                    String senhaSalva = parts[2].trim();
-    
-                    // Encriptar a senha digitada usando o mesmo algoritmo que a senha salva
-                    String senhaDigitadaEncriptada = getSHA256(senha);
-    
-                    // Comparar usuário e senha encriptadas com os dados salvos
+                if (line.startsWith("Utilizador")) {
+                    String utilizadorSalvo = line.split(":")[1].trim();
+
+                    line = reader.readLine();
+                    String nome = line.split(":")[1].trim();
+
+                    line = reader.readLine();
+                    String senhaSalva = line.split(":")[1].trim();
+
+                    line = reader.readLine();
+                    String opcao = line.split(":")[1].trim();
+
+                    String senhaDigitadaEncriptada = hashPassword(senha);
+
                     if (utilizador.equalsIgnoreCase(utilizadorSalvo) && senhaDigitadaEncriptada.equals(senhaSalva)) {
-                        return true; // Correspondência encontrada
+                        return true;
                     }
                 }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+            System.out.println("Exception message: " + ex.getMessage());
         }
-        return false; // Não encontrou correspondência
+        return false;
     }
-    
-    private static String getSHA256(String senha) {
+
+    private String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(senha.getBytes(StandardCharsets.UTF_8));
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < hash.length; i++) {
-                String hex = Integer.toHexString(0xff & hash[i]);
-                if(hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexHash = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexHash.append('0');
+                hexHash.append(hex);
             }
-            return hexString.toString();
+            return hexHash.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            return null;
         }
-        return "";
     }
-    
 
     private void definirLayout() {
         JPanel painelLogin = new JPanel();

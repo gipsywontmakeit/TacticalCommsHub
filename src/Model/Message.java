@@ -1,16 +1,25 @@
 package Model;
 
+import Model.CommunicationChannel;
+import Model.Entity;
+
+import java.time.LocalDateTime;
+
 public class Message {
     private int id;
-    private String username;
-    private String message;
-    private boolean isNotified;
+    private String content;
+    private Entity sender;
+    private Entity receiver;
+    private CommunicationChannel communicationChannel;
+    private LocalDateTime timestamp;
 
-    public Message(int id, String username, String message, boolean isNotified) {
+    public Message(int id, String content, Entity sender, Entity receiver, CommunicationChannel communicationChannel) {
         this.id = id;
-        this.username = username;
-        this.message = message;
-        this.isNotified = isNotified;
+        this.content = content;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.communicationChannel = communicationChannel;
+        this.timestamp = LocalDateTime.now();
     }
 
     public int getId() {
@@ -21,38 +30,43 @@ public class Message {
         this.id = id;
     }
 
-     public String getUsername() {
-        return username;
+    public String getContent() {
+        return content;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-     public String getMessage() {
-        return message;
+    public Entity getSender() {
+        return sender;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setSender(Entity sender) {
+        this.sender = sender;
     }
 
-     public boolean getIsNotified() {
-        return isNotified;
+    public Entity getReceiver() {
+        return receiver;
     }
 
-    public void setIsNotified(boolean isNotified) {
-        this.isNotified = isNotified;
+    public void setReceiver(Entity receiver) {
+        this.receiver = receiver;
     }
 
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", message='" + message + '\'' +
-                ", isNotified=" + isNotified +
-                '}';
+    public CommunicationChannel getCommunicationChannel() {
+        return communicationChannel;
     }
 
+    public void setCommunicationChannel(CommunicationChannel communicationChannel) {
+        this.communicationChannel = communicationChannel;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 }

@@ -1,4 +1,5 @@
 package Enums;
 
-public class Rank {
+public enum Rank {
+    SOLDADO, SARGENTO, TENENTE
 }
