@@ -24,3 +24,8 @@ Nome: ten
 Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
 Opção: Tenente
 -----------
+Utilizador: josesousa
+Nome: José
+Senha: 5a3d10b5cb68022b05cbb6c654ab3c9bf5aa0be1771d0d24b4e5eea437c10dae
+Opção: Tenente
+-----------

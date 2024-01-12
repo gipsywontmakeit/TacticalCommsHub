@@ -7,12 +7,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 public class Relatorios extends JFrame {
 
     private JButton detalhesSolicitacoesButton;
     private JButton detalhesAutorizacoesButton;
     private JButton voltarButton;
+
+    private static final String USERS_FILE = "UserData.txt";
 
     private static Entity actualUser;
 
@@ -78,12 +81,18 @@ public class Relatorios extends JFrame {
     }
 
     private void mostrarDetalhesSolicitacoes() {
-        // Lógica para mostrar detalhes sobre solicitações
-        JOptionPane.showMessageDialog(this, "Detalhes sobre Solicitações");
+        List<String> solicitacoes = Autorizacao.getHistoricoSolicitacoes();
+        StringBuilder detalhes = new StringBuilder("Histórico de Solicitações:\n");
+        for (String solicitacao : solicitacoes) {
+            detalhes.append(solicitacao).append("\n");
+        }
+        JTextArea textArea = new JTextArea(detalhes.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        JOptionPane.showMessageDialog(this, scrollPane, "Detalhes sobre Solicitações", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void mostrarDetalhesAutorizacoes() {
-        // Lógica para mostrar detalhes sobre autorizações
         JOptionPane.showMessageDialog(this, "Detalhes sobre Autorizações");
     }
 
@@ -91,7 +100,7 @@ public class Relatorios extends JFrame {
         try {
             TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
             tacticalCommsHub.setVisible(true);
-            dispose(); // Fecha a janela atual (Relatorios)
+            dispose();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

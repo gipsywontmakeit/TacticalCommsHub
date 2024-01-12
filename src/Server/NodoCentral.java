@@ -8,61 +8,28 @@ import Model.Request;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * A classe NodoCentral é responsável por gerir os utilizadores do sistema
+ */
 public class NodoCentral {
     private List<Entity> users;
-    private Map<Entity, Integer> requestsCount;
-    private Map<Entity, Integer> authorizationsCount;
-    private Map<LocalDateTime, Integer> activeUsersCount;
 
 
+    /**
+     * Construtor da classe NodoCentral
+     */
     public NodoCentral() {
         users = new ArrayList<>();
-        requestsCount = new HashMap<>();
-        authorizationsCount = new HashMap<>();
         scheduleReportingTask();
     }
 
-    public void processRequest(Request request) {
-        if (request.getType() == RequestType.LAUNCH_MISSILE) {
-            if (request.getRequester().getRank() == Rank.Soldado &&
-                    request.getRecipient().getRank() == Rank.Tenente) {
-                System.out.println("Pedido de lançamento de míssil recebido!");
-                acceptRequest(request);
-            } else {
-                System.out.println("Pedido de lançamento de míssil não autorizado devido à hierarquia.");
-            }
-        } else {
-            System.out.println("Pedido não reconhecido ou não suportado.");
-        }
-
-        updateRequestsCount(request.getRequester());
-    }
-
-    private void acceptRequest(Request request) {
-        System.out.println("Pedido aceite: " + request.getContent());
-
-        updateAuthorizationsCount(request.getRecipient());
-    }
-
-    private void updateRequestsCount(Entity requester) {
-        if (requestsCount.containsKey(requester)) {
-            int count = requestsCount.get(requester);
-            requestsCount.put(requester, count + 1);
-        } else {
-            requestsCount.put(requester, 1);
-        }
-    }
-
-    private void updateAuthorizationsCount(Entity recipient) {
-        if (authorizationsCount.containsKey(recipient)) {
-            int count = authorizationsCount.get(recipient);
-            authorizationsCount.put(recipient, count + 1);
-        } else {
-            authorizationsCount.put(recipient, 1);
-        }
-    }
-
+    /**
+     * Agenda uma tarefa para reportar o número de utilizadores ativos no sistema
+     */
     private void scheduleReportingTask() {
         Timer timer = new Timer();
         long delay = 0;
@@ -76,16 +43,23 @@ public class NodoCentral {
         }, delay, interval);
     }
 
-        private void reportActiveUsersToHighestRank() {
-            Rank highestRank = getHighestRank();
+    /**
+     * Envia um report dos utilizadores ativos para o rank mais alto
+     */
+    private void reportActiveUsersToHighestRank() {
+        Rank highestRank = getHighestRank();
 
-            for (Entity user : users) {
-                if (user.getRank() == highestRank && user.isTenente()) {
-                    sendActiveUsersReport(user, calculateActiveUsersCount());
-                }
+        for (Entity user : users) {
+            if (user.getRank() == highestRank && user.isTenente()) {
+                sendActiveUsersReport(user, calculateActiveUsersCount());
             }
         }
+    }
 
+    /**
+     * Método get para o rank mais alto
+      * @return Rank
+     */
     private Rank getHighestRank() {
         Rank highestRank = Rank.Soldado;
         for (Entity user : users) {
@@ -96,38 +70,23 @@ public class NodoCentral {
         return highestRank;
     }
 
+    /**
+     * Calcula o número de utilizadores ativos no sistema
+     *
+     * @return
+     */
     private int calculateActiveUsersCount() {
         return users.size();
     }
 
+    /**
+     * Envia uma notificação para todos os utilizadores do sistema
+     *
+     * @param user
+     * @param activeUsersCount
+     */
     private void sendActiveUsersReport(Entity user, int activeUsersCount) {
         System.out.println("Sending active users report to " + user.getUsername() + ": " + activeUsersCount);
-    }
-
-    private void reportCountsToUsers() {
-        String requestsReport = generateReport(requestsCount, "Solicitações Realizadas");
-        String authorizationsReport = generateReport(authorizationsCount, "Autorizações Concedidas");
-
-        for (Entity user : users) {
-            sendReportToUser(user, requestsReport + "\n" + authorizationsReport);
-        }
-    }
-
-    private String generateReport(Map<Entity, Integer> countMap, String title) {
-        StringBuilder report = new StringBuilder();
-        report.append("=== ").append(title).append(" ===\n");
-        for (Map.Entry<Entity, Integer> entry : countMap.entrySet()) {
-            Entity user = entry.getKey();
-            int count = entry.getValue();
-            report.append(user.getUsername()).append(": ").append(count).append("\n");
-        }
-        return report.toString();
-    }
-
-    private void sendReportToUser(Entity user, String report) {
-        // Implement logic to send report to the user (e.g., display on UI, send message, etc.)
-        // Example: user.receiveReport(report);
-        System.out.println("Sending report to " + user.getUsername() + ":\n" + report);
     }
 
 }

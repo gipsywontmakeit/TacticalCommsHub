@@ -45,6 +45,10 @@ public class Worker extends Thread {
         }
     }
 
+    /**
+     * getter do socket
+     * @return
+     */
     public Socket getSocket() {
         return socket;
     }
