@@ -1,9 +1,9 @@
 -----------
-Sender: luis
-Receiver: Utilizador: victor
-Message: ola
------------
 Sender: victor
 Receiver: Utilizador: luis
-Message: ola, tudo bem?
+Message: ola
+-----------
+Sender: luis
+Receiver: Utilizador: victor
+Message: teste
 -----------
