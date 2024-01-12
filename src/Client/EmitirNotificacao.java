@@ -30,6 +30,7 @@ public class EmitirNotificacao extends JFrame {
     }
 
     private void inicializarComponentes() {
+
         JLabel destinatarioLabel = new JLabel("Destinatário:");
         destinatarioComboBox = new JComboBox<>();
 
@@ -84,7 +85,6 @@ public class EmitirNotificacao extends JFrame {
             e.printStackTrace();
         }
     }
-    
 
     private void enviarNotificacao() {
         String canal = (String) destinatarioComboBox.getSelectedItem();
