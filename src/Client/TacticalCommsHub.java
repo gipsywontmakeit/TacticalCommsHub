@@ -119,6 +119,15 @@ public class TacticalCommsHub extends JFrame {
             }
         });
 
+        JButton mensagensRecebidasButton = (JButton) getContentPane().getComponent(5);
+
+        mensagensRecebidasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirMensagensRecebidas();
+            }
+        });
+
         JButton relatoriosButton = (JButton) getContentPane().getComponent(7); // Índice do botão "Relatórios"
 
         relatoriosButton.addActionListener(new ActionListener() {
@@ -159,6 +168,16 @@ public class TacticalCommsHub extends JFrame {
         }
     }
 
+    private void abrirMensagensRecebidas() {
+        try {
+        MensagensRecebidas mensagensRecebidas = new MensagensRecebidas(actualUser);
+        mensagensRecebidas.setVisible(true);
+        dispose();
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    }
+
     private void abrirAutorizacao() {
         Autorizacao autorizacao = new Autorizacao(actualUser);
         autorizacao.setVisible(true);
@@ -182,7 +201,7 @@ public class TacticalCommsHub extends JFrame {
     
         // Aqui, você pode abrir a página "ListaCanais" ou realizar outras ações necessárias
         try {
-            new ListaCanais().setVisible(true);
+            new ListaCanais(actualUser).setVisible(true);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -197,7 +216,7 @@ public class TacticalCommsHub extends JFrame {
                             ex.printStackTrace();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Você não tem permissão para acessar Relatórios.");
+                        JOptionPane.showMessageDialog(this, "Não tens permissão para aceder a Relatórios.");
                     }
                 }
                 
@@ -209,9 +228,9 @@ public class TacticalCommsHub extends JFrame {
                                 // Lê as próximas três linhas após "-----------"
                                 String username = reader.readLine();
                                 if(username != null && username.trim().startsWith("Utilizador:")) {
-                                    // Extrai o nome de usuário
+                                    // Extrai o nome de utilizador
                                     username = username.trim().substring("Utilizador:".length()).trim();
-                                    // Verifica se o nome de usuário corresponde ao usuário atual
+                                    // Verifica se o nome de utilizador corresponde ao utilizador atual
                                     if (!username.equals(entity.getUsername())) {
                                         reader.readLine();
                                         reader.readLine();

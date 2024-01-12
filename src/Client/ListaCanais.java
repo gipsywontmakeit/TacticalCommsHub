@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import Model.Entity;
 
 public class ListaCanais extends JFrame {
 
@@ -15,14 +16,14 @@ public class ListaCanais extends JFrame {
     private JButton entrarButton;
     private JButton criarCanalButton;
     private JButton voltarButton;
+    private static Entity actualUser;
 
     private static final String CANAIS_FILE = "CanaisComunicacao.txt";
-    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                ListaCanais listaCanais = new ListaCanais();
+                ListaCanais listaCanais = new ListaCanais(actualUser);
                 listaCanais.setVisible(true);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -30,7 +31,8 @@ public class ListaCanais extends JFrame {
         });
     }
 
-    public ListaCanais() throws IOException {
+    public ListaCanais(Entity actualUser) throws IOException {
+        this.actualUser = actualUser;
         inicializarComponentes();
         definirOuvintes();
         definirLayout();
@@ -63,16 +65,14 @@ public class ListaCanais extends JFrame {
                 criarCanal();
             }
         });
-    }
 
-
-        /* voltarButton.addActionListener(new ActionListener() {
+        voltarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 voltar();
             }
         });
-    } */
+    }
 
     private void definirLayout() {
         JPanel painelListaCanais = new JPanel();
@@ -113,19 +113,16 @@ public class ListaCanais extends JFrame {
         // Lógica para redirecionar para a interface CriarCanal
         dispose(); // Fecha a janela atual
 
-        new CriarCanal().setVisible(true);
-
+        new CriarCanal(actualUser).setVisible(true);
     }
 
-   /*  private void voltar() {
-        // Lógica para voltar (fechar a janela atual, por exemplo)
-        dispose();
-
+    private void voltar() {
         try {
-            new TacticalCommsHub().setVisible(true);
-       } catch (Exception ex) {
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
+            tacticalCommsHub.setVisible(true);
+            dispose(); 
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-    } */
-    
+    }
 }

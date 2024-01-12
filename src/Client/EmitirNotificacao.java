@@ -97,7 +97,7 @@ public class EmitirNotificacao extends JFrame {
         // Lógica para salvar a notificação em um arquivo .txt
         salvarNotificacao(destinatario, mensagem);
 
-        // Feedback para o usuário
+        // Feedback para o utilizador
         JOptionPane.showMessageDialog(this, "Notificação enviada com sucesso!");
 
         // Limpar campos
@@ -110,7 +110,7 @@ public class EmitirNotificacao extends JFrame {
             writer.write(System.lineSeparator());
             writer.write("Mensagem: " + mensagem);
             writer.write(System.lineSeparator());
-            writer.write("--------------------");
+            writer.write("-----------");
             writer.write(System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,11 +128,11 @@ public class EmitirNotificacao extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            try {
-                new EmitirNotificacao(actualUser).setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Entity actualUser = new Entity();
+            EmitirNotificacao emitirNotificacao = new EmitirNotificacao(actualUser);
+            emitirNotificacao.setVisible(true);
         });
     }
+    
 }
+

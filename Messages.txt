@@ -1,18 +1,7 @@
-Sender: victor
-Receiver: Utilizador: luis
-Message: por favor da
------------
-Sender: victor
-Receiver: Utilizador: 1
-Message: estamos a ser atacados cuidado
 -----------
 Sender: victor
 Receiver: Utilizador: teste
 Message: boas
------------
-Sender: victor
-Receiver: Utilizador: luis
-Message: boa noite
 -----------
 Sender: victor
 Receiver: Utilizador: luis

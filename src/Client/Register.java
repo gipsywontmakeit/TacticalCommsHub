@@ -138,7 +138,7 @@ public class Register extends JFrame {
                  escritor.println("Nome: " + nome);
                  escritor.println("Senha: " + senhaCriptografada);
                  escritor.println("Opção: " + comboBoxOpcoes.getSelectedItem());
-                    escritor.println("--------------------");
+                    escritor.println("-----------");
              } catch (IOException e) {
                  e.printStackTrace();
              }
@@ -191,7 +191,6 @@ public class Register extends JFrame {
             }
         }
     }
-
 
     // Adicionar lógica para verificar se o utilizador já existe no ficheiro
      // Retorna true se existir, false se não existir

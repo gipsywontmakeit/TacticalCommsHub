@@ -121,7 +121,7 @@ public class ChatPage extends JFrame {
     private void backToTacticalCommsHub(TacticalCommsHub tacticalCommsHub) {
         // Verifica se a instância de TacticalCommsHub foi fornecida
         if (tacticalCommsHub != null) {
-            tacticalCommsHub.setLoggedUser(actualUser); // Atualiza o usuário logado na TacticalCommsHub
+            tacticalCommsHub.setLoggedUser(actualUser); // Atualiza o utilizador logado na TacticalCommsHub
             tacticalCommsHub.setVisible(true); // Torna a TacticalCommsHub visível novamente
             dispose(); // Fecha a janela de chat
         } else {

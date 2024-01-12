@@ -11,31 +11,16 @@ Opcao: Tenente
 -----------
 Utilizador: teste
 Nome: teste
-Senha: a69ded8278e5995d61a8fb680e6ee1df19219f0ec52f28ce7cd566a14040562f
-Opcao: Soldado
------------
-Utilizador: teste1
-Nome: teste1
-Senha: 15bf532d22345576b4a51b96da4754c039ef3458494066d76828e893d69ebd1e
-Opcao: Tenente
------------
-Utilizador: 1
-Nome: 1
 Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
-Opcao: Tenente
+Opção: Sargento
 -----------
-Utilizador: a
-Nome: a
-Senha: ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb
-Opção: Soldado
------------
-Utilizador: c
-Nome: c
-Senha: 2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6
-Opção: Soldado
------------
-Utilizador: joaquim
-Nome: joaquim
+Utilizador: teste5
+Nome: teste5
 Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
+Opção: Tenente
+-----------
+Utilizador: asasasas
+Nome: asasasas
+Senha: ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d
 Opção: Soldado
---------------------
+-----------

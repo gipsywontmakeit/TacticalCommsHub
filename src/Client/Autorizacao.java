@@ -110,7 +110,7 @@ public class Autorizacao extends JFrame {
                     // Avança para a próxima linha
                     line = reader.readLine();
                     if (line != null && line.startsWith("Utilizador:")) {
-                        // Adiciona o primeiro valor (nome do usuário) após "-----------" à JComboBox
+                        // Adiciona o primeiro valor (nome do utilizador) após "-----------" à JComboBox
                         String username = line.substring("Utilizador:".length()).trim();
 
                         // Avança para a quarta linha (quarto valor após "-----------")
@@ -118,7 +118,7 @@ public class Autorizacao extends JFrame {
                         line = reader.readLine(); // Senha
                         line = reader.readLine(); // Opcao
                         if (line != null && line.trim().equals("Opcao: Tenente")) {
-                            // Adiciona o primeiro valor (nome do usuário) à JComboBox apenas se for Tenente
+                            // Adiciona o primeiro valor (nome do utilizador) à JComboBox apenas se for Tenente
                             tenentesComboBox.addItem(username);
                         }
                     }
@@ -128,6 +128,8 @@ public class Autorizacao extends JFrame {
             e.printStackTrace();
         }
     }
+    
+    
 
     private void atualizarCampoOutroTipo() {
         String tipoSelecionado = (String) tipoAutorizacaoComboBox.getSelectedItem();

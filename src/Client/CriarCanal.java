@@ -1,5 +1,6 @@
 package Client;
 
+import Model.Entity;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,8 +19,10 @@ public class CriarCanal extends JFrame {
     private static final int LARGURA_JANELA = 400;
     private static final int ALTURA_JANELA = 300;
     private static final String CANAIS_FILE = "CanaisComunicacao.txt"; // Arquivo para armazenar os canais
+    private static Entity actualUser;
 
-    public CriarCanal() {
+    public CriarCanal(Entity actualUser) {
+        this.actualUser = actualUser;
         inicializarComponentes();
         definirOuvintes();
         definirLayout();
@@ -43,12 +46,12 @@ public class CriarCanal extends JFrame {
             }
         });
 
-//        voltarButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                voltarParaTacticalCommsHub();
-//            }
-//        });
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                voltar();
+            }
+        });
     }
 
     private void definirLayout() {
@@ -79,28 +82,26 @@ public class CriarCanal extends JFrame {
     private void salvarCanalNoArquivo(String novoCanal) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(CANAIS_FILE, true))) {
             writer.println(novoCanal);
-            System.out.println("Novo canal criado e salvo no arquivo.");
+            System.out.println("Novo canal criado e guardado no arquivo.");
         } catch (IOException e) {
             System.err.println("Erro ao escrever no arquivo: " + e.getMessage());
         }
     }
 
-//    private void voltarParaTacticalCommsHub() {
-//        // Lógica para voltar para a página TacticalCommsHub
-//        dispose(); // Fecha a janela atual
-//
-//        // Abre a página TacticalCommsHub ou realiza outras ações necessárias
-//        try {
-//            new TacticalCommsHub().setVisible(true);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
+    private void voltar() {
+    try {
+        TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
+        tacticalCommsHub.setVisible(true);
+        dispose(); 
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                new CriarCanal().setVisible(true);
+                new CriarCanal(actualUser).setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
