@@ -14,3 +14,7 @@ Sender: victor
 Receiver: Utilizador: luis
 Message: boa noite
 -----------
+Sender: victor
+Receiver: Utilizador: luis
+Message: teste teste teste
+-----------
