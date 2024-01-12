@@ -70,7 +70,6 @@ public class MensagensRecebidas extends JFrame {
             }
         });
 
-        mensagensList.addListSelectionListener(e -> exibirMensagemCompleta());
     }
 
     private void definirLayout() {
@@ -103,16 +102,42 @@ public class MensagensRecebidas extends JFrame {
         String fileName = "Messages.txt"; // Nome do arquivo de mensagens
     
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String sender = null;
+            String message = null;
             String line;
             while ((line = reader.readLine()) != null) {
-                // Alteração aqui: verifique se a linha contém "Receiver: Utilizador:" + receiver
-                if (line.contains("Receiver: Utilizador: " + receiver)) {
-                    // Adiciona a mensagem ao modelo da lista
-                    listModel.addElement(line);
+                // Se a linha contém "Sender:", armazene o remetente
+                if (line.startsWith("Sender: ")) {
+                    sender = line.substring("Sender: ".length());
                 }
+                // Se a linha contém "Receiver:", armazene o destinatário
+                else if (line.startsWith("Receiver: ")) {
+                    String currentReceiver = line.substring("Receiver: ".length());
+                    // Se o destinatário atual for igual ao destinatário desejado
+                    if (currentReceiver.equals("Utilizador: " + receiver)) {
+                        // Se encontrarmos uma mensagem correspondente e que não foi enviada pelo próprio utilizador, adicionamos ao modelo da lista
+                        if (sender != null && message != null && !sender.equals(receiver)) {
+                            listModel.addElement("Sender: " + sender);
+                            listModel.addElement("Message: " + message);
+                            listModel.addElement("-----------");
+                        }
+                    }
+                }
+                // Se a linha contém "Message:", armazene a mensagem
+                else if (line.startsWith("Message: ")) {
+                    message = line.substring("Message: ".length());
+                }
+            }
+    
+            // Verifica se a última mensagem é para o destinatário desejado e não foi enviada pelo próprio utilizador
+            if (sender != null && message != null && !sender.equals(receiver)) {
+                listModel.addElement("Sender: " + sender);
+                listModel.addElement("Message: " + message);
+                listModel.addElement("-----------");
             }
         }
     }
+    
     
     
 
@@ -155,40 +180,7 @@ public class MensagensRecebidas extends JFrame {
         }
     }
 
-    private void exibirMensagemCompleta() {
-        if (!mensagensList.isSelectionEmpty()) {
-            String selectedMessage = mensagensList.getSelectedValue();
-            String[] lines = selectedMessage.split("\n");
-
-            boolean encontrouSeparador = false;
-            StringBuilder mensagemCompleta = new StringBuilder();
-
-            for (String line : lines) {
-                if (line.trim().equals("-----------")) {
-                    encontrouSeparador = true;
-                    continue;
-                }
-
-                if (encontrouSeparador && line.trim().startsWith("Message:")) {
-                    mensagemCompleta.append(line.trim().substring("Message:".length()).trim()).append("\n");
-                }
-            }
-
-            if (mensagemCompleta.length() > 0) {
-                JOptionPane.showMessageDialog(this, mensagemCompleta.toString(), "Mensagem Completa", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                // Print debug information
-                System.out.println("Debug Info:");
-                System.out.println("Selected Message: " + selectedMessage);
-                System.out.println("Lines:");
-                for (String line : lines) {
-                    System.out.println(line);
-                }
-
-                JOptionPane.showMessageDialog(this, "Erro ao obter mensagem completa.", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+    
 
 }
 
