@@ -17,6 +17,7 @@ public class ListaCanais extends JFrame {
     private JButton voltarButton;
 
     private static final String CANAIS_FILE = "CanaisComunicacao.txt";
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -62,14 +63,16 @@ public class ListaCanais extends JFrame {
                 criarCanal();
             }
         });
-
-//        voltarButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                voltar();
-//            }
-//        });
     }
+
+
+        /* voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                voltar();
+            }
+        });
+    } */
 
     private void definirLayout() {
         JPanel painelListaCanais = new JPanel();
@@ -114,15 +117,15 @@ public class ListaCanais extends JFrame {
 
     }
 
-//    private void voltar() {
-//        // Lógica para voltar (fechar a janela atual, por exemplo)
-//        dispose();
-//
-//        try {
-//            new TacticalCommsHub().setVisible(true);
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
+   /*  private void voltar() {
+        // Lógica para voltar (fechar a janela atual, por exemplo)
+        dispose();
+
+        try {
+            new TacticalCommsHub().setVisible(true);
+       } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    } */
     
 }

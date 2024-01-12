@@ -76,7 +76,7 @@ public class TacticalCommsHub extends JFrame {
     private void definirOuvintes() {
 
 
-        JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(5); // Índice do botão "Emitir Notificações"
+        JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(6); // Índice do botão "Emitir Notificações"
         emitirNotificacaoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
