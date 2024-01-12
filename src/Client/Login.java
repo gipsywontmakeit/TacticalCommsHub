@@ -1,5 +1,8 @@
 package Client;
 
+import Enums.Rank;
+import Model.Entity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Login extends JFrame {
 
+    private Entity actualUser;
     private JButton login, criarConta;
     private JTextField inputUtilizador;
     private JPasswordField inputPass; 
@@ -28,6 +32,10 @@ public class Login extends JFrame {
                 e.printStackTrace();
             }
         });
+    }
+
+    public Entity getActualUser() {
+        return actualUser;
     }
 
     public Login() {
@@ -54,7 +62,7 @@ public class Login extends JFrame {
                 abrirPaginaRegistro();
             }
         });
-    
+
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,17 +70,17 @@ public class Login extends JFrame {
                 String utilizadorDigitado = inputUtilizador.getText();
                 char[] senhaChars = inputPass.getPassword();
                 String senhaDigitada = new String(senhaChars);
-        
+
                 // Verificar se os campos estão preenchidos
                 if (!utilizadorDigitado.isEmpty() && senhaChars.length > 0) {
-                    // Verificar se os dados correspondem ao arquivo de usuários
-                    if (verificarCredenciais(utilizadorDigitado, senhaDigitada)) {
+                    Entity loggedInUser = verificarCredenciais(utilizadorDigitado, senhaDigitada);
+                    if (loggedInUser != null) {
                         JOptionPane.showMessageDialog(Login.this, "Login realizado com sucesso!");
                         // Limpar a senha após o login
                         inputPass.setText("");
-        
+
                         // Abrir a interface TacticalCommsHub após o login bem-sucedido
-                        abrirTacticalCommsHub();
+                        abrirTacticalCommsHub(loggedInUser);
                     } else {
                         JOptionPane.showMessageDialog(Login.this, "Credenciais inválidas. Tente novamente.");
                         // Limpar a senha em caso de credenciais inválidas
@@ -86,7 +94,7 @@ public class Login extends JFrame {
     }
 
 
-    private boolean verificarCredenciais(String utilizador, String senha) {
+    private Entity verificarCredenciais(String utilizador, String senha) {
         try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -100,12 +108,12 @@ public class Login extends JFrame {
                     String senhaSalva = line.split(":")[1].trim();
 
                     line = reader.readLine();
-                    String opcao = line.split(":")[1].trim();
+                    Rank rank = Rank.valueOf(line.split(":")[1].trim()); // Assumindo que a informação do rank está no formato correto
 
                     String senhaDigitadaEncriptada = hashPassword(senha);
 
                     if (utilizador.equalsIgnoreCase(utilizadorSalvo) && senhaDigitadaEncriptada.equals(senhaSalva)) {
-                        return true;
+                        return new Entity(1, utilizador, senhaSalva, rank); // Ajuste o ID conforme necessário
                     }
                 }
             }
@@ -113,7 +121,7 @@ public class Login extends JFrame {
             ex.printStackTrace();
             System.out.println("Exception message: " + ex.getMessage());
         }
-        return false;
+        return null;
     }
 
     private String hashPassword(String password) {
@@ -161,13 +169,14 @@ public class Login extends JFrame {
         }
     }
 
-    private void abrirTacticalCommsHub() {
+    private void abrirTacticalCommsHub(Entity loggedInUser) {
         try {
-            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub();
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(loggedInUser);
             tacticalCommsHub.setVisible(true);
             dispose(); // Fecha a janela de login
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
 }

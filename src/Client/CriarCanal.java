@@ -43,12 +43,12 @@ public class CriarCanal extends JFrame {
             }
         });
 
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                voltarParaTacticalCommsHub();
-            }
-        });
+//        voltarButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                voltarParaTacticalCommsHub();
+//            }
+//        });
     }
 
     private void definirLayout() {
@@ -85,17 +85,17 @@ public class CriarCanal extends JFrame {
         }
     }
 
-    private void voltarParaTacticalCommsHub() {
-        // Lógica para voltar para a página TacticalCommsHub
-        dispose(); // Fecha a janela atual
-
-        // Abre a página TacticalCommsHub ou realiza outras ações necessárias
-        try {
-            new TacticalCommsHub().setVisible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+//    private void voltarParaTacticalCommsHub() {
+//        // Lógica para voltar para a página TacticalCommsHub
+//        dispose(); // Fecha a janela atual
+//
+//        // Abre a página TacticalCommsHub ou realiza outras ações necessárias
+//        try {
+//            new TacticalCommsHub().setVisible(true);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

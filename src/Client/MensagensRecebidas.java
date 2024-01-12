@@ -64,12 +64,12 @@ public class MensagensRecebidas extends JFrame {
             }
         });
 
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                voltarParaTacticalCommsHub();
-            }
-        });
+//        voltarButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                voltarParaTacticalCommsHub();
+//            }
+//        });
     }
 
     private void definirLayout() {
@@ -126,12 +126,12 @@ public class MensagensRecebidas extends JFrame {
         // ou a marcação da mensagem como "lida", dependendo dos requisitos
     }
 
-    private void voltarParaTacticalCommsHub() {
-        dispose(); // Fecha a janela atual
-        try {
-            new TacticalCommsHub().setVisible(true); // Abre a TacticalCommsHub
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+//    private void voltarParaTacticalCommsHub() {
+//        dispose(); // Fecha a janela atual
+//        try {
+//            new TacticalCommsHub().setVisible(true); // Abre a TacticalCommsHub
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 }

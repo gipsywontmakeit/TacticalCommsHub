@@ -1,5 +1,7 @@
 package Client;
 
+import Model.Entity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,10 +14,12 @@ public class Relatorios extends JFrame {
     private JButton detalhesAutorizacoesButton;
     private JButton voltarButton;
 
+    private static Entity actualUser;
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                Relatorios relatorios = new Relatorios();
+                Relatorios relatorios = new Relatorios(actualUser);
                 relatorios.setVisible(true);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -23,7 +27,8 @@ public class Relatorios extends JFrame {
         });
     }
 
-    public Relatorios() throws IOException {
+    public Relatorios(Entity actualUser) throws IOException {
+        this.actualUser = actualUser;
         inicializarComponentes();
         definirOuvintes();
         definirLayout();
@@ -83,9 +88,8 @@ public class Relatorios extends JFrame {
     }
 
     private void voltar() {
-        // Lógica para voltar (abrir a interface TacticalCommsHub)
         try {
-            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub();
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
             tacticalCommsHub.setVisible(true);
             dispose(); // Fecha a janela atual (Relatorios)
         } catch (Exception ex) {
