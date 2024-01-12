@@ -159,29 +159,39 @@ public class MensagensRecebidas extends JFrame {
         if (!mensagensList.isSelectionEmpty()) {
             String selectedMessage = mensagensList.getSelectedValue();
             String[] lines = selectedMessage.split("\n");
-    
+
             boolean encontrouSeparador = false;
-    
+            StringBuilder mensagemCompleta = new StringBuilder();
+
             for (String line : lines) {
-                if (encontrouSeparador) {
-                    // Verificar se a linha começa com "Message:"
-                    if (line.trim().startsWith("Message:")) {
-                        String mensagemCompleta = line.trim().substring("Message:".length()).trim();
-                        JOptionPane.showMessageDialog(this, mensagemCompleta, "Mensagem Completa", JOptionPane.INFORMATION_MESSAGE);
-                        return;
-                    }
-                }
-    
-                // Verificar se a linha contém "-----------"
                 if (line.trim().equals("-----------")) {
                     encontrouSeparador = true;
+                    continue;
+                }
+
+                if (encontrouSeparador && line.trim().startsWith("Message:")) {
+                    mensagemCompleta.append(line.trim().substring("Message:".length()).trim()).append("\n");
                 }
             }
-    
-            // Se não encontrarmos a linha "Message:" após "-----------", exibir uma mensagem de erro
-            JOptionPane.showMessageDialog(this, "Erro ao obter mensagem completa.", "Erro", JOptionPane.ERROR_MESSAGE);
+
+            if (mensagemCompleta.length() > 0) {
+                JOptionPane.showMessageDialog(this, mensagemCompleta.toString(), "Mensagem Completa", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // Print debug information
+                System.out.println("Debug Info:");
+                System.out.println("Selected Message: " + selectedMessage);
+                System.out.println("Lines:");
+                for (String line : lines) {
+                    System.out.println(line);
+                }
+
+                JOptionPane.showMessageDialog(this, "Erro ao obter mensagem completa.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
-    }    
-    
-    
+    }
+
 }
+
+
+    
+
