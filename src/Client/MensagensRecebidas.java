@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,14 +19,15 @@ public class MensagensRecebidas extends JFrame {
     private JList<String> mensagensList;
     private JButton apagarMensagemButton;
     private JButton voltarButton;
-    private static Entity actualUser;
+    private Entity actualUser;
 
     private static final String USERS_FILE = "UserData.txt";
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                MensagensRecebidas mensagensRecebidas = new MensagensRecebidas(actualUser);
+                Entity user = new Entity();
+                MensagensRecebidas mensagensRecebidas = new MensagensRecebidas(user);
                 mensagensRecebidas.setVisible(true);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -42,7 +42,7 @@ public class MensagensRecebidas extends JFrame {
         definirLayout();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
-        setTitle("Mensagens Recebidas");
+        setTitle("Mensagens Recebidas - " + actualUser.getUsername());
         setLocationRelativeTo(null);
 
         carregarMensagensRecebidas();
@@ -91,48 +91,51 @@ public class MensagensRecebidas extends JFrame {
     }
 
     private void carregarMensagensRecebidas() throws IOException {
-        String currentUser = "Utilizador"; // Substitua pelo usuário atual
+        String currentUser = actualUser.getUsername();
         carregarMensagensDoArquivo(currentUser);
     }
 
     private void carregarMensagensDoArquivo(String receiver) throws IOException {
         DefaultListModel<String> listModel = (DefaultListModel<String>) mensagensList.getModel();
         listModel.clear(); // Limpa a lista antes de recarregar as mensagens
-
+    
         // Carrega as mensagens do arquivo de mensagens
         String fileName = "Messages.txt"; // Nome do arquivo de mensagens
-
+    
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.contains("Receiver: " + receiver)) {
+                // Alteração aqui: verifique se a linha contém "Receiver: Utilizador:" + receiver
+                if (line.contains("Receiver: Utilizador: " + receiver)) {
                     // Adiciona a mensagem ao modelo da lista
                     listModel.addElement(line);
                 }
             }
         }
     }
+    
+    
 
     private void apagarMensagem() {
         if (!mensagensList.isSelectionEmpty()) {
             DefaultListModel<String> listModel = (DefaultListModel<String>) mensagensList.getModel();
             int selectedIndex = mensagensList.getSelectedIndex();
-    
+
             if (selectedIndex != -1) {
                 // Obtém a mensagem selecionada
                 String mensagemSelecionada = listModel.getElementAt(selectedIndex);
-    
+
                 // Remove a mensagem do modelo da lista
                 listModel.remove(selectedIndex);
-    
+
                 // Lógica para apagar a mensagem selecionada no arquivo Messages.txt
                 try {
                     String fileName = "Messages.txt";
                     List<String> linhas = Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
-    
+
                     // Remove a linha correspondente à mensagem selecionada
                     linhas.remove(mensagemSelecionada);
-    
+
                     // Atualiza o arquivo com as linhas restantes
                     Files.write(Paths.get(fileName), linhas, StandardCharsets.UTF_8);
                 } catch (IOException e) {
@@ -142,7 +145,6 @@ public class MensagensRecebidas extends JFrame {
             }
         }
     }
-    
 
     private void voltarParaTacticalCommsHub() {
         dispose(); // Fecha a janela atual
@@ -156,7 +158,30 @@ public class MensagensRecebidas extends JFrame {
     private void exibirMensagemCompleta() {
         if (!mensagensList.isSelectionEmpty()) {
             String selectedMessage = mensagensList.getSelectedValue();
-            JOptionPane.showMessageDialog(this, selectedMessage, "Mensagem Completa", JOptionPane.INFORMATION_MESSAGE);
+            String[] lines = selectedMessage.split("\n");
+    
+            boolean encontrouSeparador = false;
+    
+            for (String line : lines) {
+                if (encontrouSeparador) {
+                    // Verificar se a linha começa com "Message:"
+                    if (line.trim().startsWith("Message:")) {
+                        String mensagemCompleta = line.trim().substring("Message:".length()).trim();
+                        JOptionPane.showMessageDialog(this, mensagemCompleta, "Mensagem Completa", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                }
+    
+                // Verificar se a linha contém "-----------"
+                if (line.trim().equals("-----------")) {
+                    encontrouSeparador = true;
+                }
+            }
+    
+            // Se não encontrarmos a linha "Message:" após "-----------", exibir uma mensagem de erro
+            JOptionPane.showMessageDialog(this, "Erro ao obter mensagem completa.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }    
+    
+    
 }

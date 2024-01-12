@@ -76,7 +76,7 @@ public class EmitirNotificacao extends JFrame {
             while ((line = reader.readLine()) != null) {
                 if (line.equals("-----------")) {
                     // Lê a próxima linha após "-----------", que contém o destinatário
-                    String destinatario = reader.readLine().trim();
+                    String destinatario = reader.readLine();
                     destinatarioComboBox.addItem(destinatario);
                 }
             }

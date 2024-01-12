@@ -4,6 +4,18 @@ Receiver: Utilizador: teste
 Message: boas
 -----------
 Sender: victor
+Receiver: Utilizador: ten
+Message: ten ten ten
+-----------
+Sender: victor
+Receiver: Utilizador: ten
+Message: fnoergnoebgojw jlw f
+-----------
+Sender: ten
 Receiver: Utilizador: luis
-Message: teste teste teste
+Message: ola!
+-----------
+Sender: victor
+Receiver: Utilizador: a
+Message: ola!
 -----------

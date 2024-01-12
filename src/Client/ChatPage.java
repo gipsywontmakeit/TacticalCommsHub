@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class ChatPage extends JFrame {
 
@@ -47,6 +49,7 @@ public class ChatPage extends JFrame {
         setSize(400, 300);
         setTitle("Chat - " + actualUser.getUsername());
         setLocationRelativeTo(null);
+        
     }
 
     private void initializeComponents() {
@@ -58,6 +61,7 @@ public class ChatPage extends JFrame {
     }
 
     private void defineListeners() {
+
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
