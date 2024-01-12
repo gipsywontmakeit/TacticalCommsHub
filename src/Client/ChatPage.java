@@ -123,13 +123,13 @@ public class ChatPage extends JFrame {
     }
 
     private void backToTacticalCommsHub(TacticalCommsHub tacticalCommsHub) {
-        // Verifica se a instância de TacticalCommsHub foi fornecida
+        
         if (tacticalCommsHub != null) {
-            tacticalCommsHub.setLoggedUser(actualUser); // Atualiza o utilizador logado na TacticalCommsHub
-            tacticalCommsHub.setVisible(true); // Torna a TacticalCommsHub visível novamente
-            dispose(); // Fecha a janela de chat
+            tacticalCommsHub.setLoggedUser(actualUser); 
+            tacticalCommsHub.setVisible(true);
+            dispose(); 
         } else {
-            // Se a instância não foi fornecida, cria uma nova
+          
             try {
                 new TacticalCommsHub(actualUser).setVisible(true);
             } catch (Exception ex) {
@@ -145,7 +145,7 @@ public class ChatPage extends JFrame {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.equals("-----------")) {
-                    // Lê a próxima linha após "-----------" e adiciona à lista
+                    
                     String nextLine = reader.readLine();
                     if (nextLine != null) {
                         usersList.add(nextLine);
@@ -156,7 +156,7 @@ public class ChatPage extends JFrame {
             e.printStackTrace();
         }
 
-        // Converte a lista para um array
+       
         return usersList.toArray(new String[0]);
     }
 }

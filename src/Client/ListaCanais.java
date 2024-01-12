@@ -9,6 +9,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import Model.Entity;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ListaCanais extends JFrame {
 
@@ -107,14 +112,32 @@ public class ListaCanais extends JFrame {
     private void entrarNoCanal() {
         String canalSelecionado = (String) canaisComboBox.getSelectedItem();
         if (canalSelecionado != null) {
-            // Lógica para entrar no canal
+            guardarEntradaNoCanal(actualUser.getUsername(), canalSelecionado);
             System.out.println("Entrando no canal: " + canalSelecionado);
         }
     }
 
+    private void guardarEntradaNoCanal(String username, String canal) {
+        String fileName = "Notificacoes.txt";
+        LocalDateTime agora = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            writer.write("Utilizador: " + username);
+            writer.newLine();
+            writer.write("Canal: " + canal);
+            writer.newLine();
+            writer.write("Data e Hora de Entrada: " + agora.format(formatter));
+            writer.newLine();
+            writer.write("-----------");
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void criarCanal() {
-        // Lógica para redirecionar para a interface CriarCanal
-        dispose(); // Fecha a janela atual
+        dispose(); 
 
         new CriarCanal(actualUser).setVisible(true);
     }

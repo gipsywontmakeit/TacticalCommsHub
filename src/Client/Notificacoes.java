@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Notificacoes extends JFrame {
 
@@ -13,7 +16,6 @@ public class Notificacoes extends JFrame {
     private JTextArea pedidoAutorizacaoArea;
     private JTextArea notificacaoRelatorioArea;
     private JTextArea solicitacaoCanalArea;
-    private JTextArea mensagemBroadcastArea;
 
     private static Entity actualUser;
 
@@ -25,6 +27,7 @@ public class Notificacoes extends JFrame {
         setSize(500, 300);
         setTitle("Notificações");
         setLocationRelativeTo(null);
+        carregarNotificacoes();
     }
 
     private void inicializarComponentes() {
@@ -32,19 +35,16 @@ public class Notificacoes extends JFrame {
         pedidoAutorizacaoArea = new JTextArea(5, 30);
         notificacaoRelatorioArea = new JTextArea(5, 30);
         solicitacaoCanalArea = new JTextArea(5, 30);
-        mensagemBroadcastArea = new JTextArea(5, 30);
 
         mensagemRecebidaArea.setEditable(false);
         pedidoAutorizacaoArea.setEditable(false);
         notificacaoRelatorioArea.setEditable(false);
         solicitacaoCanalArea.setEditable(false);
-        mensagemBroadcastArea.setEditable(false);
 
         JScrollPane scrollMensagemRecebida = new JScrollPane(mensagemRecebidaArea);
         JScrollPane scrollPedidoAutorizacao = new JScrollPane(pedidoAutorizacaoArea);
         JScrollPane scrollNotificacaoRelatorio = new JScrollPane(notificacaoRelatorioArea);
         JScrollPane scrollSolicitacaoCanal = new JScrollPane(solicitacaoCanalArea);
-        JScrollPane scrollMensagemBroadcast = new JScrollPane(mensagemBroadcastArea);
 
         JButton voltarButton = new JButton("Voltar");
         voltarButton.addActionListener(new ActionListener() {
@@ -54,7 +54,7 @@ public class Notificacoes extends JFrame {
             }
         });
 
-        add(new JLabel("Mensagem Recebida:"));
+        add(new JLabel("Notificação Recebida:"));
         add(scrollMensagemRecebida);
         add(new JLabel("Pedido de Autorização Recebido:"));
         add(scrollPedidoAutorizacao);
@@ -62,8 +62,6 @@ public class Notificacoes extends JFrame {
         add(scrollNotificacaoRelatorio);
         add(new JLabel("Solicitação de Canal:"));
         add(scrollSolicitacaoCanal);
-        add(new JLabel("Mensagem de Broadcast:"));
-        add(scrollMensagemBroadcast);
         add(voltarButton);
     }
 
@@ -71,11 +69,27 @@ public class Notificacoes extends JFrame {
         setLayout(new GridLayout(6, 2));
     }
 
+    private void carregarNotificacoes() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Notificacoes.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Destinatário: Utilizador: " + actualUser.getUsername())) {
+                    String mensagem = reader.readLine();
+                    adicionarMensagemRecebida(mensagem);
+                } else {
+                    reader.readLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void voltarParaTacticalCommsHub() {
         try {
             TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
             tacticalCommsHub.setVisible(true);
-            dispose(); // Fecha a janela atual (Notificações)
+            dispose();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -95,10 +109,6 @@ public class Notificacoes extends JFrame {
 
     public void adicionarSolicitacaoCanal(String solicitacao) {
         solicitacaoCanalArea.append(solicitacao + "\n");
-    }
-
-    public void adicionarMensagemBroadcast(String mensagem) {
-        mensagemBroadcastArea.append(mensagem + "\n");
     }
 
     public static void main(String[] args) {

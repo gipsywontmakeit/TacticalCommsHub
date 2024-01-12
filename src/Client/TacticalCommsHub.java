@@ -20,16 +20,6 @@ public class TacticalCommsHub extends JFrame {
 
     private ChatPage chatPage;
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            try {
-//                new TacticalCommsHub(actualUser).setVisible(true);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        });
-//    }
-
     public void setLoggedUser(Entity user) {
         this.actualUser = user;
     }
@@ -76,7 +66,7 @@ public class TacticalCommsHub extends JFrame {
     private void definirOuvintes() {
 
 
-        JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(6); // Índice do botão "Emitir Notificações"
+        JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(6); 
         emitirNotificacaoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,9 +74,8 @@ public class TacticalCommsHub extends JFrame {
             }
         });
 
-        JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(3); // Índice do botão "Pedir Autorização"
-
-        JButton notificacoesButton = (JButton) getContentPane().getComponent(4); // Índice do botão "Notificações"
+        JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(3); 
+        JButton notificacoesButton = (JButton) getContentPane().getComponent(4); 
 
         notificacoesButton.addActionListener(new ActionListener() {
             @Override
@@ -101,7 +90,7 @@ public class TacticalCommsHub extends JFrame {
     }
 });
 
-        JButton definirCanalButton = (JButton) getContentPane().getComponent(2); // Índice do botão "Definir Canal"
+        JButton definirCanalButton = (JButton) getContentPane().getComponent(2); 
 
         definirCanalButton.addActionListener(new ActionListener() {
             @Override
@@ -110,7 +99,7 @@ public class TacticalCommsHub extends JFrame {
             }
         });
 
-        JButton enviarMensagemButton = (JButton) getContentPane().getComponent(1); // Índice do botão "Enviar Mensagem"
+        JButton enviarMensagemButton = (JButton) getContentPane().getComponent(1); 
 
         enviarMensagemButton.addActionListener(new ActionListener() {
             @Override
@@ -128,7 +117,7 @@ public class TacticalCommsHub extends JFrame {
             }
         });
 
-        JButton relatoriosButton = (JButton) getContentPane().getComponent(7); // Índice do botão "Relatórios"
+        JButton relatoriosButton = (JButton) getContentPane().getComponent(7); 
 
         relatoriosButton.addActionListener(new ActionListener() {
             @Override
@@ -137,7 +126,7 @@ public class TacticalCommsHub extends JFrame {
             }
         });
 
-        JButton logoutButton = (JButton) getContentPane().getComponent(8); // Índice do botão "Logout"
+        JButton logoutButton = (JButton) getContentPane().getComponent(8); 
 
         logoutButton.addActionListener(new ActionListener() {
             @Override
@@ -148,8 +137,8 @@ public class TacticalCommsHub extends JFrame {
     }
 
     private void abrirNotificacoes() {
-        // Lógica para abrir a interface "Notificacoes" ou realizar outras ações necessárias
-        dispose(); // Fecha a janela atual (TacticalCommsHub)
+       
+        dispose(); 
         try {
             Notificacoes notificacoes = new Notificacoes(actualUser);
             notificacoes.setVisible(true);
@@ -159,8 +148,7 @@ public class TacticalCommsHub extends JFrame {
     }
 
     private void abrirEmitirNotificacao() {
-        // Lógica para abrir a interface "Emitir Notificacao" ou realizar outras ações necessárias
-        dispose(); // Fecha a janela atual (TacticalCommsHub)
+        dispose(); 
         try {
             new EmitirNotificacao(actualUser).setVisible(true);
         } catch (Exception ex) {
@@ -196,10 +184,8 @@ public class TacticalCommsHub extends JFrame {
     }
 
     private void abrirListaCanais() {
-        // Lógica para abrir a página "ListaCanais" ou realizar outras ações necessárias
-        dispose(); // Fecha a janela atual
+        dispose(); 
     
-        // Aqui, você pode abrir a página "ListaCanais" ou realizar outras ações necessárias
         try {
             new ListaCanais(actualUser).setVisible(true);
         } catch (IOException ex) {
@@ -225,12 +211,9 @@ public class TacticalCommsHub extends JFrame {
                         String line;
                         while ((line = reader.readLine()) != null) {
                             if (line.equals("-----------")) {
-                                // Lê as próximas três linhas após "-----------"
                                 String username = reader.readLine();
                                 if(username != null && username.trim().startsWith("Utilizador:")) {
-                                    // Extrai o nome de utilizador
                                     username = username.trim().substring("Utilizador:".length()).trim();
-                                    // Verifica se o nome de utilizador corresponde ao utilizador atual
                                     if (!username.equals(entity.getUsername())) {
                                         reader.readLine();
                                         reader.readLine();
@@ -243,9 +226,7 @@ public class TacticalCommsHub extends JFrame {
 
                                 String opcaoLine = reader.readLine();
                                 if (opcaoLine != null && opcaoLine.trim().startsWith("Opcao:")) {
-                                    // Extrai o valor da opção (Sargento, Tenente, Soldado, etc.)
                                     String opcao = opcaoLine.trim().substring("Opcao:".length()).trim();
-                                    // Verifica se a opção é "Tenente"
                                     return entity.isTenente() && "Tenente".equals(opcao);
                                 }
                             }
@@ -259,9 +240,8 @@ public class TacticalCommsHub extends JFrame {
                 
 
     private void realizarLogout() {
-        dispose(); // Fecha a janela atual
+        dispose(); 
 
-        // Aqui, você pode abrir a página de login ou realizar outras ações necessárias
         try {
             new Login().setVisible(true);
         } catch (Exception ex) {

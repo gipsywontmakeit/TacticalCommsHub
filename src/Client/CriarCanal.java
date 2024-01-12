@@ -18,7 +18,7 @@ public class CriarCanal extends JFrame {
 
     private static final int LARGURA_JANELA = 400;
     private static final int ALTURA_JANELA = 300;
-    private static final String CANAIS_FILE = "CanaisComunicacao.txt"; // Arquivo para armazenar os canais
+    private static final String CANAIS_FILE = "CanaisComunicacao.txt"; 
     private static Entity actualUser;
 
     public CriarCanal(Entity actualUser) {
@@ -71,10 +71,8 @@ public class CriarCanal extends JFrame {
         String novoCanal = novoCanalTextField.getText().trim();
 
         if (!novoCanal.isEmpty()) {
-            // Salvar o novo canal no arquivo
             salvarCanalNoArquivo(novoCanal);
 
-            // Limpar o campo de texto
             novoCanalTextField.setText("");
         }
     }

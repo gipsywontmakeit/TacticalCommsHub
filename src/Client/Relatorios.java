@@ -78,12 +78,10 @@ public class Relatorios extends JFrame {
     }
 
     private void mostrarDetalhesSolicitacoes() {
-        // Lógica para mostrar detalhes sobre solicitações
         JOptionPane.showMessageDialog(this, "Detalhes sobre Solicitações");
     }
 
     private void mostrarDetalhesAutorizacoes() {
-        // Lógica para mostrar detalhes sobre autorizações
         JOptionPane.showMessageDialog(this, "Detalhes sobre Autorizações");
     }
 
@@ -91,7 +89,7 @@ public class Relatorios extends JFrame {
         try {
             TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
             tacticalCommsHub.setVisible(true);
-            dispose(); // Fecha a janela atual (Relatorios)
+            dispose(); 
         } catch (Exception ex) {
             ex.printStackTrace();
         }

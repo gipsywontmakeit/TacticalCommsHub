@@ -1,6 +1,17 @@
-Destinatário: Utilizador: luis
+Canal: grupo1
+Mensagem: ola
+-----------
+Utilizador: victor
+Canal: grupo2
+Data e Hora de Entrada: 12-01-2024 22:39:26
+-----------
+Canal: grupo2
 Mensagem: teste
---------------------
-Destinatário: Utilizador: luis
-Mensagem: e q
---------------------
+-----------
+Utilizador: luis
+Canal: grupo1
+Data e Hora de Entrada: 12-01-2024 22:48:25
+-----------
+Canal: grupo1
+Mensagem: olqqqqqqq
+-----------

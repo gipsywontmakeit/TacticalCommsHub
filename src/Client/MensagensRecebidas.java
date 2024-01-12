@@ -96,26 +96,21 @@ public class MensagensRecebidas extends JFrame {
 
     private void carregarMensagensDoArquivo(String receiver) throws IOException {
         DefaultListModel<String> listModel = (DefaultListModel<String>) mensagensList.getModel();
-        listModel.clear(); // Limpa a lista antes de recarregar as mensagens
+        listModel.clear(); 
     
-        // Carrega as mensagens do arquivo de mensagens
-        String fileName = "Messages.txt"; // Nome do arquivo de mensagens
+        String fileName = "Messages.txt"; 
     
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String sender = null;
             String message = null;
             String line;
             while ((line = reader.readLine()) != null) {
-                // Se a linha contém "Sender:", armazene o remetente
                 if (line.startsWith("Sender: ")) {
                     sender = line.substring("Sender: ".length());
                 }
-                // Se a linha contém "Receiver:", armazene o destinatário
                 else if (line.startsWith("Receiver: ")) {
                     String currentReceiver = line.substring("Receiver: ".length());
-                    // Se o destinatário atual for igual ao destinatário desejado
                     if (currentReceiver.equals("Utilizador: " + receiver)) {
-                        // Se encontrarmos uma mensagem correspondente e que não foi enviada pelo próprio utilizador, adicionamos ao modelo da lista
                         if (sender != null && message != null && !sender.equals(receiver)) {
                             listModel.addElement("Sender: " + sender);
                             listModel.addElement("Message: " + message);
@@ -123,13 +118,11 @@ public class MensagensRecebidas extends JFrame {
                         }
                     }
                 }
-                // Se a linha contém "Message:", armazene a mensagem
                 else if (line.startsWith("Message: ")) {
                     message = line.substring("Message: ".length());
                 }
             }
     
-            // Verifica se a última mensagem é para o destinatário desejado e não foi enviada pelo próprio utilizador
             if (sender != null && message != null && !sender.equals(receiver)) {
                 listModel.addElement("Sender: " + sender);
                 listModel.addElement("Message: " + message);
@@ -147,34 +140,28 @@ public class MensagensRecebidas extends JFrame {
             int selectedIndex = mensagensList.getSelectedIndex();
 
             if (selectedIndex != -1) {
-                // Obtém a mensagem selecionada
                 String mensagemSelecionada = listModel.getElementAt(selectedIndex);
 
-                // Remove a mensagem do modelo da lista
                 listModel.remove(selectedIndex);
 
-                // Lógica para apagar a mensagem selecionada no arquivo Messages.txt
                 try {
                     String fileName = "Messages.txt";
                     List<String> linhas = Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
 
-                    // Remove a linha correspondente à mensagem selecionada
                     linhas.remove(mensagemSelecionada);
 
-                    // Atualiza o arquivo com as linhas restantes
                     Files.write(Paths.get(fileName), linhas, StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    // Lidar com exceções de IO, se necessário
                 }
             }
         }
     }
 
     private void voltarParaTacticalCommsHub() {
-        dispose(); // Fecha a janela atual
+        dispose(); 
         try {
-            new TacticalCommsHub(actualUser).setVisible(true); // Abre a TacticalCommsHub
+            new TacticalCommsHub(actualUser).setVisible(true); 
         } catch (Exception ex) {
             ex.printStackTrace();
         }

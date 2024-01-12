@@ -98,7 +98,7 @@ public class Autorizacao extends JFrame {
     }
 
     private void carregarTiposAutorizacao() {
-        // Carregar tipos de autorização, se necessário
+       
     }
 
     private void carregarTenentes() {
@@ -106,18 +106,18 @@ public class Autorizacao extends JFrame {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.equals("-----------")) {
-                    // Avança para a próxima linha
+                   
                     line = reader.readLine();
                     if (line != null && line.startsWith("Utilizador:")) {
-                        // Adiciona o primeiro valor (nome do utilizador) após "-----------" à JComboBox
+                        
                         String username = line.substring("Utilizador:".length()).trim();
     
-                        // Avança para a quarta linha (quarto valor após "-----------")
+                      
                         line = reader.readLine(); // Nome
                         line = reader.readLine(); // Senha
                         line = reader.readLine(); // Opcao
                         if (line != null && line.contains("Tenente")) {
-                            // Adiciona o primeiro valor (nome do utilizador) à JComboBox apenas se for Tenente
+                        
                             tenentesComboBox.addItem(username);
                         }
                     }
@@ -144,24 +144,23 @@ public class Autorizacao extends JFrame {
         String outroTipo = outroTipoField.getText().trim();
         String tenenteSelecionado = (String) tenentesComboBox.getSelectedItem();
 
-        // Lógica para solicitar autorização, verificar patente, etc.
-        // Neste exemplo, apenas imprimimos as informações no console
+       
         System.out.println("Tipo de Autorização: " + tipoSelecionado);
         if (!outroTipo.isEmpty()) {
             System.out.println("Outro Tipo: " + outroTipo);
         }
         System.out.println("Enviado para Tenente: " + tenenteSelecionado);
 
-        // Lógica para salvar a solicitação em um arquivo, enviar notificação, etc.
+        
         System.out.println("Solicitação de autorização enviada ao Tenente.");
     }
 
     private void voltarParaTacticalCommsHub() {
-        dispose(); // Fecha a janela atual
+        dispose(); 
         try {
             TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
             tacticalCommsHub.setLoggedUser(actualUser);
-            tacticalCommsHub.setVisible(true); // Abre a TacticalCommsHub
+            tacticalCommsHub.setVisible(true); 
         } catch (Exception ex) {
             ex.printStackTrace();
         }

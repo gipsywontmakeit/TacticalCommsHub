@@ -22,7 +22,7 @@ public class EmitirNotificacao extends JFrame {
         inicializarComponentes();
         definirLayout();
         definirOuvintes();
-        carregarDestinatarios();  // Carregar os destinatários ao iniciar
+        carregarDestinatarios();  
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setTitle("Emitir Notificação");
@@ -76,7 +76,6 @@ public class EmitirNotificacao extends JFrame {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.equals("-----------")) {
-                    // Lê a próxima linha após "-----------", que contém o canal de comunicação
                     String canal = reader.readLine();
                     destinatarioComboBox.addItem(canal);
                 }
@@ -95,13 +94,10 @@ public class EmitirNotificacao extends JFrame {
             return;
         }
     
-        // Lógica para salvar a notificação no arquivo Notificacoes.txt
         salvarNotificacao(canal, mensagem);
     
-        // Feedback para o utilizador
         JOptionPane.showMessageDialog(this, "Notificação enviada com sucesso!");
     
-        // Limpar campos
         mensagemArea.setText("");
     }
     
@@ -137,4 +133,3 @@ public class EmitirNotificacao extends JFrame {
     }
     
 }
-

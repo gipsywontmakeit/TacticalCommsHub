@@ -78,7 +78,7 @@ public class Register extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Login paginaEntrada = new Login();
                 paginaEntrada.setVisible(true);
-                Register.this.dispose(); // Fecha a janela de registo
+                Register.this.dispose(); 
             }
         });
 
@@ -114,25 +114,19 @@ public class Register extends JFrame {
     private void inicializarDadosUtilizador() {
         File ficheiro = new File(CAMINHO_FICHEIRO_UTILIZADORES);
         if (ficheiro.exists()) {
-            // Carregar dados do ficheiro .txt
         }
     }
 
-     // Guardar dados no ficheiro
-     // Encriptar as senhas antes de guardar
+
      private void guardarDadosUtilizadorEmFicheiro() {
-         // Get user input
          String utilizador = inputUtilizador.getText();
          String nome = inputNome.getText();
          char[] senhaChars = inputPass.getText().toCharArray();
          String senha = new String(senhaChars);
 
-         // Check if all fields are non-empty before saving
          if (!utilizador.isEmpty() && !nome.isEmpty() && senhaChars.length > 0) {
-             // Hash the password before storing it
              String senhaCriptografada = criptografarSenha(senha);
 
-             // Write user data to the file
              try (PrintWriter escritor = new PrintWriter(new FileWriter(CAMINHO_FICHEIRO_UTILIZADORES, true))) {
                  escritor.println("Utilizador: " + utilizador);
                  escritor.println("Nome: " + nome);
@@ -151,7 +145,6 @@ public class Register extends JFrame {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(senha.getBytes(StandardCharsets.UTF_8));
 
-            // Convert the hash to a hexadecimal representation
             StringBuilder hexHash = new StringBuilder();
             for (byte b : hash) {
                 String hex = Integer.toHexString(0xff & b);
@@ -179,7 +172,7 @@ public class Register extends JFrame {
             if (verificarUtilizadorExistente(utilizador)) {
                 mostrarMensagem(2);
             } else {
-                guardarDadosUtilizadorEmFicheiro(); // Save data during registration
+                guardarDadosUtilizadorEmFicheiro(); 
                 mostrarMensagem(3);
 
                 inputPass.setText("");
@@ -192,8 +185,7 @@ public class Register extends JFrame {
         }
     }
 
-    // Adicionar lógica para verificar se o utilizador já existe no ficheiro
-     // Retorna true se existir, false se não existir
+
     private boolean verificarUtilizadorExistente(String utilizador) {
         return false;
     }

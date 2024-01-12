@@ -66,24 +66,19 @@ public class Login extends JFrame {
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Adicionar lógica de login conforme necessário
                 String utilizadorDigitado = inputUtilizador.getText();
                 char[] senhaChars = inputPass.getPassword();
                 String senhaDigitada = new String(senhaChars);
 
-                // Verificar se os campos estão preenchidos
                 if (!utilizadorDigitado.isEmpty() && senhaChars.length > 0) {
                     Entity loggedInUser = verificarCredenciais(utilizadorDigitado, senhaDigitada);
                     if (loggedInUser != null) {
                         JOptionPane.showMessageDialog(Login.this, "Login realizado com sucesso!");
-                        // Limpar a senha após o login
                         inputPass.setText("");
 
-                        // Abrir a interface TacticalCommsHub após o login bem-sucedido
                         abrirTacticalCommsHub(loggedInUser);
                     } else {
                         JOptionPane.showMessageDialog(Login.this, "Credenciais inválidas. Tente novamente.");
-                        // Limpar a senha em caso de credenciais inválidas
                         inputPass.setText("");
                     }
                 } else {
@@ -108,12 +103,12 @@ public class Login extends JFrame {
                     String senhaSalva = line.split(":")[1].trim();
 
                     line = reader.readLine();
-                    Rank rank = Rank.valueOf(line.split(":")[1].trim()); // Assumindo que a informação do rank está no formato correto
+                    Rank rank = Rank.valueOf(line.split(":")[1].trim()); 
 
                     String senhaDigitadaEncriptada = hashPassword(senha);
 
                     if (utilizador.equalsIgnoreCase(utilizadorSalvo) && senhaDigitadaEncriptada.equals(senhaSalva)) {
-                        return new Entity(1, utilizador, senhaSalva, rank); // Ajuste o ID conforme necessário
+                        return new Entity(1, utilizador, senhaSalva, rank); 
                     }
                 }
             }
@@ -163,7 +158,7 @@ public class Login extends JFrame {
         try {
             Register paginaRegistro = new Register();
             paginaRegistro.setVisible(true);
-            dispose(); // Fecha a janela de login
+            dispose(); 
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -173,7 +168,7 @@ public class Login extends JFrame {
         try {
             TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(loggedInUser);
             tacticalCommsHub.setVisible(true);
-            dispose(); // Fecha a janela de login
+            dispose(); 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
