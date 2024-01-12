@@ -1,5 +1,7 @@
 package Client;
 
+import Model.Entity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +16,9 @@ public class EmitirNotificacao extends JFrame {
     private JComboBox<String> destinatarioComboBox;
     private JTextArea mensagemArea;
 
-    public EmitirNotificacao() {
+    private static Entity actualUser;
+    public EmitirNotificacao(Entity actualUser) {
+        this.actualUser = actualUser;
         inicializarComponentes();
         definirLayout();
         definirOuvintes();
@@ -116,7 +120,7 @@ public class EmitirNotificacao extends JFrame {
     private void voltarParaTacticalCommsHub() {
         dispose();
         try {
-            new TacticalCommsHub().setVisible(true);
+            new TacticalCommsHub(actualUser).setVisible(true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -125,7 +129,7 @@ public class EmitirNotificacao extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                new EmitirNotificacao().setVisible(true);
+                new EmitirNotificacao(actualUser).setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }

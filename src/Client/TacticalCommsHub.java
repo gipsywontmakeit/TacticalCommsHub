@@ -33,17 +33,10 @@ public class TacticalCommsHub extends JFrame {
     public void setLoggedUser(Entity user) {
         this.actualUser = user;
     }
-
-<<<<<<< HEAD
-=======
-    public TacticalCommsHub(Entity actualUser) {
-        this.actualUser = actualUser;
-    }
-
->>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
     private JLabel activeUsersReportLabel;
 
-    public TacticalCommsHub() {
+    public TacticalCommsHub(Entity actualUser) {
+        this.actualUser = actualUser;
         inicializarComponentes();
         definirLayout();
         definirOuvintes();
@@ -82,15 +75,6 @@ public class TacticalCommsHub extends JFrame {
 
     private void definirOuvintes() {
 
-<<<<<<< HEAD
-        JButton notificacoesButton = (JButton) getContentPane().getComponent(3); // Índice do botão "Notificações"
-
-        notificacoesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirNotificacoes();
-            }
-        });
 
         JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(5); // Índice do botão "Emitir Notificações"
         emitirNotificacaoButton.addActionListener(new ActionListener() {
@@ -100,10 +84,7 @@ public class TacticalCommsHub extends JFrame {
             }
         });
 
-        JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(2); // Índice do botão "Pedir Autorização"
-=======
         JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(3); // Índice do botão "Pedir Autorização"
->>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
 
         JButton notificacoesButton = (JButton) getContentPane().getComponent(4); // Índice do botão "Notificações"
 
@@ -113,15 +94,6 @@ public class TacticalCommsHub extends JFrame {
                 abrirNotificacoes();
             }
         });
-
-        JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(5); // Índice do botão "Emitir Notificações"
-        emitirNotificacaoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirEmitirNotificacao();
-            }
-        });
-
         pedirAutorizacaoButton.addActionListener(new ActionListener() {
     @Override
      public void actionPerformed(ActionEvent e) {
@@ -169,9 +141,8 @@ public class TacticalCommsHub extends JFrame {
     private void abrirNotificacoes() {
         // Lógica para abrir a interface "Notificacoes" ou realizar outras ações necessárias
         dispose(); // Fecha a janela atual (TacticalCommsHub)
-<<<<<<< HEAD
         try {
-            Notificacoes notificacoes = new Notificacoes();
+            Notificacoes notificacoes = new Notificacoes(actualUser);
             notificacoes.setVisible(true);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -182,30 +153,7 @@ public class TacticalCommsHub extends JFrame {
         // Lógica para abrir a interface "Emitir Notificacao" ou realizar outras ações necessárias
         dispose(); // Fecha a janela atual (TacticalCommsHub)
         try {
-            new EmitirNotificacao().setVisible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void abrirAutorizacao() {
-        // Lógica para abrir a página "Autorizacao" ou realizar outras ações necessárias
-        dispose(); // Fecha a janela atual
-=======
->>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
-        try {
-            Notificacoes notificacoes = new Notificacoes();
-            notificacoes.setVisible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void abrirEmitirNotificacao() {
-        // Lógica para abrir a interface "Emitir Notificacao" ou realizar outras ações necessárias
-        dispose(); // Fecha a janela atual (TacticalCommsHub)
-        try {
-            new EmitirNotificacao().setVisible(true);
+            new EmitirNotificacao(actualUser).setVisible(true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

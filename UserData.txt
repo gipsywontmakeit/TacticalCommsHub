@@ -24,8 +24,6 @@ Nome: 1
 Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b
 Opcao: Tenente
 -----------
-<<<<<<< HEAD
-=======
 Utilizador: a
 Nome: a
 Senha: ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb
@@ -36,7 +34,6 @@ Nome: c
 Senha: 2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6
 Opção: Soldado
 -----------
->>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
 Utilizador: joaquim
 Nome: joaquim
 Senha: 6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b

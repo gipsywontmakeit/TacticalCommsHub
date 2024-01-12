@@ -1,5 +1,7 @@
 package Client;
 
+import Model.Entity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +15,10 @@ public class Notificacoes extends JFrame {
     private JTextArea solicitacaoCanalArea;
     private JTextArea mensagemBroadcastArea;
 
-    public Notificacoes() {
+    private static Entity actualUser;
+
+    public Notificacoes(Entity actualUser) {
+        this.actualUser = actualUser;
         inicializarComponentes();
         definirLayout();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +73,7 @@ public class Notificacoes extends JFrame {
 
     private void voltarParaTacticalCommsHub() {
         try {
-            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub();
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
             tacticalCommsHub.setVisible(true);
             dispose(); // Fecha a janela atual (Notificações)
         } catch (Exception ex) {
@@ -98,7 +103,7 @@ public class Notificacoes extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new Notificacoes().setVisible(true);
+            new Notificacoes(actualUser).setVisible(true);
         });
     }
 }

@@ -4,75 +4,59 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class MensagensRecebidas extends JFrame {
+
+    private JTextArea mensagensTextArea;
+    private JButton verMensagemButton;
+    private JButton apagarMensagemButton;
+    private JButton voltarButton;
+
+    private static final String USERS_FILE = "UserData.txt";
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                List<String> mensagens = new ArrayList<>();
-                mensagens.add("Remetente 1: Conteúdo da Mensagem 1");
-                mensagens.add("Remetente 2: Conteúdo da Mensagem 2");
-                new MensagensRecebidas(mensagens).setVisible(true);
-            } catch (Exception e) {
+                MensagensRecebidas mensagensRecebidas = new MensagensRecebidas();
+                mensagensRecebidas.setVisible(true);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    private List<String> mensagens;
-
-    public MensagensRecebidas(List<String> mensagens) {
-        this.mensagens = mensagens;
+    public MensagensRecebidas() throws IOException {
         inicializarComponentes();
-        definirLayout();
         definirOuvintes();
+        definirLayout();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setTitle("Mensagens Recebidas");
         setLocationRelativeTo(null);
+
+        carregarMensagensRecebidas();
     }
 
     private void inicializarComponentes() {
-        JLabel tituloLabel = new JLabel("Mensagens Recebidas");
-
-        // Use um componente JTextArea para exibir várias mensagens
-        JTextArea mensagensTextArea = new JTextArea();
+        mensagensTextArea = new JTextArea();
         mensagensTextArea.setEditable(false);
-        mensagensTextArea.setLineWrap(true);
-        mensagensTextArea.setWrapStyleWord(true);
 
-        // Adicione as mensagens ao componente JTextArea
-        for (String mensagem : mensagens) {
-            mensagensTextArea.append(mensagem + "\n\n");
-        }
-
-        JButton voltarButton = new JButton("Voltar");
-
-        add(tituloLabel);
-        add(new JScrollPane(mensagensTextArea));  // Usamos um JScrollPane para permitir rolar as mensagens se necessário
-        add(voltarButton);
-    }
-
-    private void definirLayout() {
-        setLayout(new GridLayout(3, 1));
+        verMensagemButton = new JButton("Ver Mensagem");
+        apagarMensagemButton = new JButton("Apagar Mensagem");
+        voltarButton = new JButton("Voltar");
     }
 
     private void definirOuvintes() {
-        JButton voltarButton = (JButton) getContentPane().getComponent(2); // Índice do botão "Voltar"
-
-<<<<<<< HEAD
-        voltarButton.addActionListener(new ActionListener() {
+        apagarMensagemButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                voltarParaTacticalCommsHub();
+                apagarMensagem();
             }
         });
-    }
 
-=======
 //        voltarButton.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -108,7 +92,7 @@ public class MensagensRecebidas extends JFrame {
         // Carrega as mensagens do arquivo de mensagens
         String fileName = "Messages.txt"; // Nome do arquivo de mensagens
         StringBuilder mensagens = new StringBuilder();
-    
+
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -118,15 +102,8 @@ public class MensagensRecebidas extends JFrame {
                 }
             }
         }
-    
-        return mensagens.toString();
-    }
-    
 
-    private void verMensagem() {
-        // Lógica para exibir a mensagem selecionada
-        // Você pode abrir uma nova janela, caixa de diálogo, etc.
-        // e exibir o conteúdo da mensagem selecionada
+        return mensagens.toString();
     }
 
     private void apagarMensagem() {
@@ -143,14 +120,4 @@ public class MensagensRecebidas extends JFrame {
 //            ex.printStackTrace();
 //        }
 //    }
->>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
-    private void voltarParaTacticalCommsHub() {
-        // Lógica para voltar à interface "TacticalCommsHub" ou realizar outras ações necessárias
-        dispose(); // Fecha a janela atual
-        try {
-            new TacticalCommsHub().setVisible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 }
