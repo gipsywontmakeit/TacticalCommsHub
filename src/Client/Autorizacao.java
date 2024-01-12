@@ -43,7 +43,6 @@ public class Autorizacao extends JFrame {
         setSize(400, 300);
         setTitle("Solicitar Autorização");
         setLocationRelativeTo(null);
-
         carregarTiposAutorizacao();
         carregarTenentes();
     }
@@ -51,7 +50,7 @@ public class Autorizacao extends JFrame {
     private void inicializarComponentes() {
         this.tipoAutorizacaoComboBox = new JComboBox<>(TIPOS_AUTORIZACAO);
         this.outroTipoField = new JTextField();
-        this.tenentesComboBox = new JComboBox<>();
+        this.tenentesComboBox = new JComboBox<>();  
         this.solicitarAutorizacaoButton = new JButton("Solicitar Autorização");
         this.voltarButton = new JButton("Voltar");
     }
@@ -103,7 +102,7 @@ public class Autorizacao extends JFrame {
     }
 
     private void carregarTenentes() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(USERS_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.equals("-----------")) {
@@ -112,12 +111,12 @@ public class Autorizacao extends JFrame {
                     if (line != null && line.startsWith("Utilizador:")) {
                         // Adiciona o primeiro valor (nome do utilizador) após "-----------" à JComboBox
                         String username = line.substring("Utilizador:".length()).trim();
-
+    
                         // Avança para a quarta linha (quarto valor após "-----------")
                         line = reader.readLine(); // Nome
                         line = reader.readLine(); // Senha
                         line = reader.readLine(); // Opcao
-                        if (line != null && line.trim().equals("Opcao: Tenente")) {
+                        if (line != null && line.contains("Tenente")) {
                             // Adiciona o primeiro valor (nome do utilizador) à JComboBox apenas se for Tenente
                             tenentesComboBox.addItem(username);
                         }
@@ -128,7 +127,6 @@ public class Autorizacao extends JFrame {
             e.printStackTrace();
         }
     }
-    
     
 
     private void atualizarCampoOutroTipo() {
