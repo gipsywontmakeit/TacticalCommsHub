@@ -25,8 +25,8 @@ public class NodoCentral {
 
     public void processRequest(Request request) {
         if (request.getType() == RequestType.LAUNCH_MISSILE) {
-            if (request.getRequester().getRank() == Rank.SOLDADO &&
-                    request.getRecipient().getRank() == Rank.TENENTE) {
+            if (request.getRequester().getRank() == Rank.Soldado &&
+                    request.getRecipient().getRank() == Rank.Tenente) {
                 System.out.println("Pedido de lançamento de míssil recebido!");
                 acceptRequest(request);
             } else {
@@ -76,18 +76,18 @@ public class NodoCentral {
         }, delay, interval);
     }
 
-    private void reportActiveUsersToHighestRank() {
-        Rank highestRank = getHighestRank();
+        private void reportActiveUsersToHighestRank() {
+            Rank highestRank = getHighestRank();
 
-        for (Entity user : users) {
-            if (user.getRank() == highestRank) {
-                sendActiveUsersReport(user, calculateActiveUsersCount());
+            for (Entity user : users) {
+                if (user.getRank() == highestRank && user.isTenente()) {
+                    sendActiveUsersReport(user, calculateActiveUsersCount());
+                }
             }
         }
-    }
 
     private Rank getHighestRank() {
-        Rank highestRank = Rank.SOLDADO;
+        Rank highestRank = Rank.Soldado;
         for (Entity user : users) {
             if (user.getRank().ordinal() > highestRank.ordinal()) {
                 highestRank = user.getRank();

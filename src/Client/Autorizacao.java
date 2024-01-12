@@ -1,5 +1,7 @@
 package Client;
 
+import Model.Entity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +11,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Autorizacao extends JFrame {
+
+    private Entity actualUser;
 
     private JComboBox<String> tipoAutorizacaoComboBox;
     private JTextField outroTipoField;
@@ -22,16 +26,16 @@ public class Autorizacao extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            try {
-                Autorizacao autorizacao = new Autorizacao();
-                autorizacao.setVisible(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Entity user = new Entity();
+            Autorizacao autorizacao = new Autorizacao(user);
+            autorizacao.setVisible(true);
         });
     }
 
-    public Autorizacao() throws IOException {
+    public Autorizacao(Entity actualUser) {
+        this.actualUser = actualUser;
+        TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
+        tacticalCommsHub.setLoggedUser(actualUser);
         inicializarComponentes();
         definirOuvintes();
         definirLayout();
@@ -155,7 +159,9 @@ public class Autorizacao extends JFrame {
     private void voltarParaTacticalCommsHub() {
         dispose(); // Fecha a janela atual
         try {
-            new TacticalCommsHub().setVisible(true); // Abre a TacticalCommsHub
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(actualUser);
+            tacticalCommsHub.setLoggedUser(actualUser);
+            tacticalCommsHub.setVisible(true); // Abre a TacticalCommsHub
         } catch (Exception ex) {
             ex.printStackTrace();
         }

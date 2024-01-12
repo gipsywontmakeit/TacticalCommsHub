@@ -1,5 +1,6 @@
 package Client;
 
+import Model.Entity;
 import Model.Message;
 
 import javax.swing.*;
@@ -18,7 +19,9 @@ public class ChatPage extends JFrame {
     private JButton sendButton;
     private JButton backButton;
 
-    private String currentUser;
+    private TacticalCommsHub tacticalCommsHub;
+
+    private Entity actualUser;
 
     private static final String USERS_FILE = "UserData.txt";
     private static final String MESSAGES_FILE = "Messages.txt";
@@ -28,22 +31,21 @@ public class ChatPage extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            try {
-                new ChatPage("Utilizador").setVisible(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Entity user = new Entity();
+            TacticalCommsHub tacticalCommsHub = new TacticalCommsHub(user);
+            ChatPage chatPage = new ChatPage(user, tacticalCommsHub);
         });
     }
 
-    public ChatPage(String currentUser) throws IOException {
-        this.currentUser = currentUser;
+    public ChatPage(Entity actualUser, TacticalCommsHub tacticalCommsHub) {
+        this.actualUser = actualUser;
+        this.tacticalCommsHub = tacticalCommsHub;
         initializeComponents();
         defineListeners();
         defineLayout();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
-        setTitle("Chat - " + currentUser);
+        setTitle("Chat - " + actualUser.getUsername());
         setLocationRelativeTo(null);
     }
 
@@ -66,7 +68,7 @@ public class ChatPage extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                backToTacticalCommsHub();
+                backToTacticalCommsHub(tacticalCommsHub);
             }
         });
     }
@@ -93,13 +95,11 @@ public class ChatPage extends JFrame {
 
     private void sendMessage() {
         String selectedUser = (String) userComboBox.getSelectedItem();
-        String messageText = inputMessage.getText().replaceAll("\\s+", "").trim();
-
+        String messageText = messageArea.getText().trim();
         if (!selectedUser.isEmpty() && !messageText.isEmpty()) {
-            displayMessage(currentUser + ": " + messageText + "\n");
+            displayMessage("Mensagem enviada com sucesso ao " + selectedUser + "!\n");
             inputMessage.setText("");
-
-            saveMessageToFile(currentUser, selectedUser, messageText);
+            saveMessageToFile(actualUser.getUsername(), selectedUser, messageText);
         }
     }
 
@@ -115,16 +115,22 @@ public class ChatPage extends JFrame {
     }
 
     private void displayMessage(String message) {
-        messageArea.append(message);
+        JOptionPane.showMessageDialog(this, message);
     }
 
-    private void backToTacticalCommsHub() {
-        // Implemente a lógica para voltar para TacticalCommsHub
-        dispose(); // Fecha a janela atual
-        try {
-            new TacticalCommsHub().setVisible(true); // Abre a TacticalCommsHub
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    private void backToTacticalCommsHub(TacticalCommsHub tacticalCommsHub) {
+        // Verifica se a instância de TacticalCommsHub foi fornecida
+        if (tacticalCommsHub != null) {
+            tacticalCommsHub.setLoggedUser(actualUser); // Atualiza o usuário logado na TacticalCommsHub
+            tacticalCommsHub.setVisible(true); // Torna a TacticalCommsHub visível novamente
+            dispose(); // Fecha a janela de chat
+        } else {
+            // Se a instância não foi fornecida, cria uma nova
+            try {
+                new TacticalCommsHub(actualUser).setVisible(true);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

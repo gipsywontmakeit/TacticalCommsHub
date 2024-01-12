@@ -51,7 +51,7 @@ public class Notification implements Serializable {
             return true;
         }
 
-        if (isSeriousIncident && profile.getRank().equals(Rank.TENENTE)) {
+        if (isSeriousIncident && profile.getRank().equals(Rank.Tenente)) {
             return true;
         }
 

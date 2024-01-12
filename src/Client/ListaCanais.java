@@ -63,12 +63,12 @@ public class ListaCanais extends JFrame {
             }
         });
 
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                voltar();
-            }
-        });
+//        voltarButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                voltar();
+//            }
+//        });
     }
 
     private void definirLayout() {
@@ -114,15 +114,15 @@ public class ListaCanais extends JFrame {
 
     }
 
-    private void voltar() {
-        // Lógica para voltar (fechar a janela atual, por exemplo)
-        dispose();
-    
-        try {
-            new TacticalCommsHub().setVisible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+//    private void voltar() {
+//        // Lógica para voltar (fechar a janela atual, por exemplo)
+//        dispose();
+//
+//        try {
+//            new TacticalCommsHub().setVisible(true);
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
     
 }

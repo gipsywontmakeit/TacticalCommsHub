@@ -1,5 +1,7 @@
 package Client;
 
+import Model.Entity;
+
 import javax.swing.*;
 
 import Model.Entity;
@@ -13,16 +15,32 @@ import java.io.IOException;
 
 public class TacticalCommsHub extends JFrame {
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new TacticalCommsHub().setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+    private Entity actualUser;
+    private JLabel loggedUser;
+
+    private ChatPage chatPage;
+
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            try {
+//                new TacticalCommsHub(actualUser).setVisible(true);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
+//    }
+
+    public void setLoggedUser(Entity user) {
+        this.actualUser = user;
     }
 
+<<<<<<< HEAD
+=======
+    public TacticalCommsHub(Entity actualUser) {
+        this.actualUser = actualUser;
+    }
+
+>>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
     private JLabel activeUsersReportLabel;
 
     public TacticalCommsHub() {
@@ -36,6 +54,7 @@ public class TacticalCommsHub extends JFrame {
     }
 
     private void inicializarComponentes() {
+
         JButton enviarMensagemButton = new JButton("Enviar Mensagem");
         JButton definirCanalButton = new JButton("Definir Canal");
         JButton pedirAutorizacaoButton = new JButton("Pedir Autorização");
@@ -44,7 +63,9 @@ public class TacticalCommsHub extends JFrame {
         JButton emitirNotificacoesButton = new JButton("Emitir Notificações");
         JButton relatoriosButton = new JButton("Relatórios");
         JButton logoutButton = new JButton("Logout");
+        loggedUser = new JLabel("Utilizador: " + actualUser.getUsername());
 
+        add(loggedUser);
         add(enviarMensagemButton);
         add(definirCanalButton);
         add(pedirAutorizacaoButton);
@@ -61,6 +82,7 @@ public class TacticalCommsHub extends JFrame {
 
     private void definirOuvintes() {
 
+<<<<<<< HEAD
         JButton notificacoesButton = (JButton) getContentPane().getComponent(3); // Índice do botão "Notificações"
 
         notificacoesButton.addActionListener(new ActionListener() {
@@ -79,15 +101,35 @@ public class TacticalCommsHub extends JFrame {
         });
 
         JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(2); // Índice do botão "Pedir Autorização"
+=======
+        JButton pedirAutorizacaoButton = (JButton) getContentPane().getComponent(3); // Índice do botão "Pedir Autorização"
+>>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
 
-pedirAutorizacaoButton.addActionListener(new ActionListener() {
+        JButton notificacoesButton = (JButton) getContentPane().getComponent(4); // Índice do botão "Notificações"
+
+        notificacoesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirNotificacoes();
+            }
+        });
+
+        JButton emitirNotificacaoButton = (JButton) getContentPane().getComponent(5); // Índice do botão "Emitir Notificações"
+        emitirNotificacaoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirEmitirNotificacao();
+            }
+        });
+
+        pedirAutorizacaoButton.addActionListener(new ActionListener() {
     @Override
-    public void actionPerformed(ActionEvent e) {
+     public void actionPerformed(ActionEvent e) {
         abrirAutorizacao();
     }
 });
 
-        JButton definirCanalButton = (JButton) getContentPane().getComponent(1); // Índice do botão "Definir Canal"
+        JButton definirCanalButton = (JButton) getContentPane().getComponent(2); // Índice do botão "Definir Canal"
 
         definirCanalButton.addActionListener(new ActionListener() {
             @Override
@@ -96,7 +138,7 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
             }
         });
 
-        JButton enviarMensagemButton = (JButton) getContentPane().getComponent(0); // Índice do botão "Enviar Mensagem"
+        JButton enviarMensagemButton = (JButton) getContentPane().getComponent(1); // Índice do botão "Enviar Mensagem"
 
         enviarMensagemButton.addActionListener(new ActionListener() {
             @Override
@@ -105,16 +147,16 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
             }
         });
 
-        JButton relatoriosButton = (JButton) getContentPane().getComponent(6); // Índice do botão "Relatórios"
+        JButton relatoriosButton = (JButton) getContentPane().getComponent(7); // Índice do botão "Relatórios"
 
         relatoriosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                verificarEAbrirRelatorios();
+                verificarEAbrirRelatorios(actualUser);
             }
         });
 
-        JButton logoutButton = (JButton) getContentPane().getComponent(7); // Índice do botão "Logout"
+        JButton logoutButton = (JButton) getContentPane().getComponent(8); // Índice do botão "Logout"
 
         logoutButton.addActionListener(new ActionListener() {
             @Override
@@ -127,6 +169,7 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
     private void abrirNotificacoes() {
         // Lógica para abrir a interface "Notificacoes" ou realizar outras ações necessárias
         dispose(); // Fecha a janela atual (TacticalCommsHub)
+<<<<<<< HEAD
         try {
             Notificacoes notificacoes = new Notificacoes();
             notificacoes.setVisible(true);
@@ -148,23 +191,40 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
     private void abrirAutorizacao() {
         // Lógica para abrir a página "Autorizacao" ou realizar outras ações necessárias
         dispose(); // Fecha a janela atual
+=======
+>>>>>>> 2b58f1a391958d4ef85f3af1d17fd877cdde01aa
         try {
-            new Autorizacao().setVisible(true);
-        } catch (IOException ex) {
+            Notificacoes notificacoes = new Notificacoes();
+            notificacoes.setVisible(true);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-                }
+    }
+
+    private void abrirEmitirNotificacao() {
+        // Lógica para abrir a interface "Emitir Notificacao" ou realizar outras ações necessárias
+        dispose(); // Fecha a janela atual (TacticalCommsHub)
+        try {
+            new EmitirNotificacao().setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void abrirAutorizacao() {
+        Autorizacao autorizacao = new Autorizacao(actualUser);
+        autorizacao.setVisible(true);
+        dispose();
+    }
 
 
     private void abrirChatPage() {
-        // Lógica para abrir a página "ChatPage" ou realizar outras ações necessárias
-        dispose(); // Fecha a janela atual
-
-        // Aqui, você pode abrir a página "ChatPage" ou realizar outras ações necessárias
-        try {
-            new ChatPage("Utilizador").setVisible(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if(chatPage == null) {
+            chatPage = new ChatPage(actualUser, this);
+            chatPage.setVisible(true);
+        } else {
+            chatPage.setVisible(true);
+            chatPage.toFront();
         }
     }
 
@@ -180,14 +240,11 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
         }
                 }
 
-                private void verificarEAbrirRelatorios() {
-                    if (verificarPermissaoTenente()) {
-                        // Lógica para abrir a interface "Relatorios" ou realizar outras ações necessárias
-                        dispose(); // Fecha a janela atual
-                
-                        // Aqui, você pode abrir a interface "Relatorios" ou realizar outras ações necessárias
+                private void verificarEAbrirRelatorios(Entity entity) {
+                    if (verificarPermissaoTenente(entity)) {
+                        dispose();
                         try {
-                            new Relatorios().setVisible(true);
+                            new Relatorios(actualUser).setVisible(true);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -196,25 +253,33 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
                     }
                 }
                 
-                private boolean verificarPermissaoTenente() {
+                private boolean verificarPermissaoTenente(Entity entity) {
                     try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
                         String line;
                         while ((line = reader.readLine()) != null) {
                             if (line.equals("-----------")) {
                                 // Lê as próximas três linhas após "-----------"
-                                for (int i = 0; i < 3; i++) {
-                                    reader.readLine();
+                                String username = reader.readLine();
+                                if(username != null && username.trim().startsWith("Utilizador:")) {
+                                    // Extrai o nome de usuário
+                                    username = username.trim().substring("Utilizador:".length()).trim();
+                                    // Verifica se o nome de usuário corresponde ao usuário atual
+                                    if (!username.equals(entity.getUsername())) {
+                                        reader.readLine();
+                                        reader.readLine();
+                                        reader.readLine();
+                                        continue;
+                                    }
                                 }
-                
-                                // Lê a linha "Opcao"
+                                reader.readLine();
+                                reader.readLine();
+
                                 String opcaoLine = reader.readLine();
                                 if (opcaoLine != null && opcaoLine.trim().startsWith("Opcao:")) {
                                     // Extrai o valor da opção (Sargento, Tenente, Soldado, etc.)
                                     String opcao = opcaoLine.trim().substring("Opcao:".length()).trim();
                                     // Verifica se a opção é "Tenente"
-                                    if ("Tenente".equals(opcao)) {
-                                        return true;
-                                    }
+                                    return entity.isTenente() && "Tenente".equals(opcao);
                                 }
                             }
                         }
@@ -223,12 +288,10 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
                     }
                     return false;
                 }
-                
-               
+
                 
 
     private void realizarLogout() {
-        // Lógica para logout (redirecionar para a página de login ou realizar outras ações)
         dispose(); // Fecha a janela atual
 
         // Aqui, você pode abrir a página de login ou realizar outras ações necessárias
@@ -237,6 +300,9 @@ pedirAutorizacaoButton.addActionListener(new ActionListener() {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        actualUser = null;
+        loggedUser.setText("Utilizador: ");
     }
 
    
