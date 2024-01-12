@@ -82,6 +82,8 @@ public class CriarCanal extends JFrame {
     private void salvarCanalNoArquivo(String novoCanal) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(CANAIS_FILE, true))) {
             writer.println(novoCanal);
+            writer.println("-----------");
+            
             System.out.println("Novo canal criado e guardado no arquivo.");
         } catch (IOException e) {
             System.err.println("Erro ao escrever no arquivo: " + e.getMessage());

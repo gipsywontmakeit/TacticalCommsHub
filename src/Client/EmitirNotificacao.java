@@ -71,42 +71,43 @@ public class EmitirNotificacao extends JFrame {
     }
 
     private void carregarDestinatarios() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("UserData.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("CanaisComunicacao.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.equals("-----------")) {
-                    // Lê a próxima linha após "-----------", que contém o destinatário
-                    String destinatario = reader.readLine();
-                    destinatarioComboBox.addItem(destinatario);
+                    // Lê a próxima linha após "-----------", que contém o canal de comunicação
+                    String canal = reader.readLine();
+                    destinatarioComboBox.addItem(canal);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 
     private void enviarNotificacao() {
-        String destinatario = (String) destinatarioComboBox.getSelectedItem();
+        String canal = (String) destinatarioComboBox.getSelectedItem();
         String mensagem = mensagemArea.getText();
-
-        if (destinatario.isEmpty() || mensagem.isEmpty()) {
+    
+        if (canal.isEmpty() || mensagem.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos.");
             return;
         }
-
-        // Lógica para salvar a notificação em um arquivo .txt
-        salvarNotificacao(destinatario, mensagem);
-
+    
+        // Lógica para salvar a notificação no arquivo Notificacoes.txt
+        salvarNotificacao(canal, mensagem);
+    
         // Feedback para o utilizador
         JOptionPane.showMessageDialog(this, "Notificação enviada com sucesso!");
-
+    
         // Limpar campos
         mensagemArea.setText("");
     }
-
-    private void salvarNotificacao(String destinatario, String mensagem) {
+    
+    private void salvarNotificacao(String canal, String mensagem) {
         try (FileWriter writer = new FileWriter("Notificacoes.txt", true)) {
-            writer.write("Destinatário: " + destinatario);
+            writer.write("Canal: " + canal);
             writer.write(System.lineSeparator());
             writer.write("Mensagem: " + mensagem);
             writer.write(System.lineSeparator());
@@ -116,6 +117,7 @@ public class EmitirNotificacao extends JFrame {
             e.printStackTrace();
         }
     }
+    
 
     private void voltarParaTacticalCommsHub() {
         dispose();

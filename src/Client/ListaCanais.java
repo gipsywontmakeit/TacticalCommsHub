@@ -94,12 +94,15 @@ public class ListaCanais extends JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(CANAIS_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                canaisList.add(line.trim());
+                if (!line.trim().equals("-----------")) {
+                    canaisList.add(line.trim());
+                }
             }
         }
-
+    
         canaisComboBox.setModel(new DefaultComboBoxModel<>(canaisList.toArray(new String[0])));
     }
+    
 
     private void entrarNoCanal() {
         String canalSelecionado = (String) canaisComboBox.getSelectedItem();
